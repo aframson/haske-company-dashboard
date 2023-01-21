@@ -9,13 +9,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ReactLoading from 'react-loading';
 import { State } from '../StateManagement';
-import AllCollections from '../components/AllCollections';
+import AllVendors from '../components/AllVendors';
 import Select from 'react-select'
-import { fetchCollections } from '../controllers/collection';
+import { fetchVendors } from '../controllers/vendors';
 import { useToasts } from 'react-toast-notifications'
 import Image from 'next/image';
-function Categories() {
 
+
+
+function Vendors() {
 
 
     const { editData, setEditData } = useContext(State)
@@ -37,7 +39,7 @@ function Categories() {
     }, [error, addToast])
 
     useEffect(() => {
-        fetchCollections(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading, tabs)
+        fetchVendors(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading, tabs)
     }, [ setGetProducts, errMsg, setIsProduct, setLoading,tabs])
 
     const router = useRouter()
@@ -47,7 +49,7 @@ function Categories() {
         setLoadingbut(true)
         setEditData({})
         setTimeout(() => {
-            router.push('/addcollection')
+            router.push('/addvendors')
         }, 1000)
     }
 
@@ -55,20 +57,21 @@ function Categories() {
         setLoading(true)
         setEditData(data)
         setTimeout(() => {
-          router.push('/addcollection')
+          router.push('/addvendors')
         }, 1000)
       }
 
 
     return (
         <NavigationLayout>
-            <ViewLayout title={"Collections"}>
+            <ViewLayout title={"Vendors"}>
 
                 <NicheCard id={styles.prodbox}>
                     <div className={styles.toptabnavigator}>
                         <div className={styles.tablist}>
                             <div onClick={() => setTabs('active')} style={{ borderBottomColor: tabs === 'active' ? '#31a658' : 'none', borderBottom: tabs === 'active' ? '5px solid #31a658' : 'none' }} className={styles.items}>Active</div>
                             <div onClick={() => setTabs('draft')} style={{ borderBottomColor: tabs === 'draft' ? '#31a658' : 'none', borderBottom: tabs === 'draft' ? '5px solid #31a658' : 'none' }} className={styles.items}>Draft</div>
+                            <div onClick={() => setTabs('map')} style={{ borderBottomColor: tabs === 'map' ? '#31a658' : 'none', borderBottom: tabs === 'map' ? '5px solid #31a658' : 'none' }} className={styles.items}>Map</div>
                         </div>
                         <div className={styles.items2} >
                             <Select
@@ -77,7 +80,7 @@ function Categories() {
                                     options={getProducts && getProducts.map((item, i) => {
                                         return {
                                             id: item.id,
-                                            label: item.title,
+                                            label: item.storename,
                                             value: item,
                                             image: item.image
                                         }
@@ -102,14 +105,14 @@ function Categories() {
                                 <center>
                                     <ReactLoading color={'white'} height={20} width={20} />
                                 </center>
-                            ) : "Add Collection"}
+                            ) : "Add Vendors"}
                         </button>
                     </div>
                     {tabs === 'active' ? (
-                        <AllCollections type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
+                        <AllVendors type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
                     ) : null}
                     {tabs === 'draft' ? (
-                        <AllCollections type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
+                        <AllVendors type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
                     ) : null}
                     {loading ? (
                         <center>
@@ -131,7 +134,7 @@ function Categories() {
                                         image={eleven}
                                     />
                                     <center>
-                                        <button onClick={() => router.push('/addcollection')} className={styles.paybutt}>Create Category</button>
+                                        <button onClick={() => router.push('/addvendors')} className={styles.paybutt}>Create Vendors</button>
                                     </center>
                                 </NicheCard>
                             )}
@@ -147,4 +150,4 @@ function Categories() {
     )
 }
 
-export default Categories
+export default Vendors

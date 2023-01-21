@@ -7,14 +7,14 @@ import { HiOutlineLogout, HiHome } from "react-icons/hi";
 import { BsCalendarEventFill, BsFillMenuButtonWideFill } from "react-icons/bs";
 import { IoMdSettings } from "react-icons/io";
 import { IoBagSharp, IoAnalyticsSharp } from "react-icons/io5";
-import { FaUser } from "react-icons/fa";
+import { FaUser ,FaSchool} from "react-icons/fa";
 import { HiSpeakerWave } from "react-icons/hi2";
 import { TbDiscount2 } from "react-icons/tb";
 import { motion } from "framer-motion";
 import { logOutUser } from '../controllers/Logout';
 import { CheckUserAuthOutBasic } from '../controllers/checkAuth';
 import { useRouter } from 'next/router'
-
+import { RiRestaurantFill } from "react-icons/ri";
 
 const ICON_SIZE = 20
 
@@ -66,6 +66,8 @@ function Navigation() {
                         <MenuItem routerLink={<Link href="/giftcard" />}> Gift Cards </MenuItem>
                     </SubMenu>
                     <MenuItem routerLink={<Link href="/customers" />} icon={<FaUser size={ICON_SIZE} color="black" />} > Customers </MenuItem>
+                    <MenuItem routerLink={<Link href="/institutions" />} icon={<FaSchool size={ICON_SIZE} color="black" />} > Institutions </MenuItem>
+                    <MenuItem routerLink={<Link href="/vendors" />} icon={<RiRestaurantFill size={ICON_SIZE} color="black" />} > Vendors </MenuItem>
                     <SubMenu icon={<IoAnalyticsSharp size={ICON_SIZE} color="black" />} label="Analytics">
                         <MenuItem routerLink={<Link href="/analytics" />} > View Analytics </MenuItem>
                         <MenuItem routerLink={<Link href="/reports" />}> View Reports </MenuItem>

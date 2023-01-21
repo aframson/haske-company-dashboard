@@ -1,20 +1,23 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styles from '../styles/Categories.module.css'
+import React, { useContext, useState, useEffect } from 'react'
+import styles from '../styles/Institution.module.css'
 import NavigationLayout from '../components/NavigationLayout';
 import ViewLayout from '../components/ViewLayout';
 import NicheCard from '../components/NicheCard';
-import eleven from '../public/assets/11.png'
+import ten from '../public/assets/18.png'
 import NicheMount from '../components/NicheMount';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import ReactLoading from 'react-loading';
 import { State } from '../StateManagement';
-import AllCollections from '../components/AllCollections';
+import AllInstitution from '../components/AllInstitution'
+import { useRouter } from 'next/router';
 import Select from 'react-select'
-import { fetchCollections } from '../controllers/collection';
 import { useToasts } from 'react-toast-notifications'
 import Image from 'next/image';
-function Categories() {
+import { fetch } from '../controllers/institution';
+
+
+
+function Institution() {
 
 
 
@@ -36,48 +39,49 @@ function Categories() {
         }
     }, [error, addToast])
 
-    useEffect(() => {
-        fetchCollections(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading, tabs)
-    }, [ setGetProducts, errMsg, setIsProduct, setLoading,tabs])
-
     const router = useRouter()
 
 
-    const addCollection = () => {
+    const addGiftCard = () => {
         setLoadingbut(true)
         setEditData({})
         setTimeout(() => {
-            router.push('/addcollection')
+            router.push('/addinstitution')
         }, 1000)
     }
+
+    useEffect(() => {
+        fetch(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading, tabs)
+    }, [ setGetProducts, errMsg, setIsProduct, setLoading,tabs])
 
     const setDataToBrEdited = (data) => {
         setLoading(true)
         setEditData(data)
         setTimeout(() => {
-          router.push('/addcollection')
+          router.push('/addinstitution')
         }, 1000)
       }
 
 
+
+
     return (
         <NavigationLayout>
-            <ViewLayout title={"Collections"}>
-
+            <ViewLayout title={"Institution"}>
                 <NicheCard id={styles.prodbox}>
                     <div className={styles.toptabnavigator}>
                         <div className={styles.tablist}>
                             <div onClick={() => setTabs('active')} style={{ borderBottomColor: tabs === 'active' ? '#31a658' : 'none', borderBottom: tabs === 'active' ? '5px solid #31a658' : 'none' }} className={styles.items}>Active</div>
                             <div onClick={() => setTabs('draft')} style={{ borderBottomColor: tabs === 'draft' ? '#31a658' : 'none', borderBottom: tabs === 'draft' ? '5px solid #31a658' : 'none' }} className={styles.items}>Draft</div>
                         </div>
-                        <div className={styles.items2} >
-                            <Select
+                        <div className={styles.items2}>
+                        <Select
                                     placeholder={"Search or select product"}
                                     // className={styles.searchinp}
                                     options={getProducts && getProducts.map((item, i) => {
                                         return {
                                             id: item.id,
-                                            label: item.title,
+                                            label: item.name,
                                             value: item,
                                             image: item.image
                                         }
@@ -97,19 +101,19 @@ function Categories() {
                                     }} 
                                     />
                         </div>
-                        <button onClick={() => addCollection()} className={styles.butt}>
+                        <button onClick={() => addGiftCard()} className={styles.butt}>
                             {loadingbut ? (
                                 <center>
                                     <ReactLoading color={'white'} height={20} width={20} />
                                 </center>
-                            ) : "Add Collection"}
+                            ) : "Add Institution"}
                         </button>
                     </div>
                     {tabs === 'active' ? (
-                        <AllCollections type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
+                        <AllInstitution type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
                     ) : null}
                     {tabs === 'draft' ? (
-                        <AllCollections type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
+                        <AllInstitution type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
                     ) : null}
                     {loading ? (
                         <center>
@@ -119,6 +123,7 @@ function Categories() {
                 </NicheCard>
 
 
+
                 {loading ? null : (
                     <>
                         {isProduct ?
@@ -126,20 +131,23 @@ function Categories() {
                             : (
                                 <NicheCard>
                                     <NicheMount
-                                        subtitle={'Group your products into categories'}
-                                        sub={`Organize your products into categories and galleries for your online store.`}
-                                        image={eleven}
+                                        subtitle={'Let your Customers Give Gifts'}
+                                        sub={`Personalize gift cards with a custom image or brand color and sell to sell it to customers`}
+                                        image={ten}
                                     />
                                     <center>
-                                        <button onClick={() => router.push('/addcollection')} className={styles.paybutt}>Create Category</button>
+                                        <button onClick={() => router.push('/addgiftcard')} className={styles.paybutt}>Create Gift Card</button>
                                     </center>
                                 </NicheCard>
                             )}
                     </>
                 )}
+
+
+
                 <center>
                     <div className={styles.link}>
-                        Learn more about <Link href={"#"}>Collections</Link>
+                        Learn more about <Link href={"#"}>Gift Cards</Link>
                     </div>
                 </center>
             </ViewLayout>
@@ -147,4 +155,4 @@ function Categories() {
     )
 }
 
-export default Categories
+export default Institution
