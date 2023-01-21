@@ -1,0 +1,116 @@
+.container{
+    height: 100%;
+    background-color: #000000;
+    margin: auto;
+    position: absolute;
+    width: 100%;
+    /* background: url(../public/assets/cov.jpg); */
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+.imagebox{
+    height: 65px;
+    /* border: 1px solid white; */
+    width: fit-content;
+    display: flex;
+
+}
+.image{
+    height: 65px;
+    width: 240px;
+    object-fit: cover;
+}
+.logbox{
+    /* border: 4px solid white; */
+    top: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    bottom: 0;
+    width: 300px;
+    height: fit-content;
+    padding: 20px;
+    /* background-color: white; */
+}
+
+.secp{
+    /* border: 1px solid red; */
+    /* padding: 10px; */
+    /* margin-top: 10px; */
+    height: 55px;
+}
+.inp{
+    height: 45px;
+    width: 100%;
+    background: none;
+    font-size: 15px;
+    border:none;
+    margin-top: 10px;
+    /* padding: 10px; */
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding-left: 10px;
+    border-radius: 5px;
+
+}
+.loginsection{
+    padding-top: 50px;
+}
+.inp:focus{
+  outline: none;
+}
+
+.passbox{
+    display: grid;
+    grid-template-columns: 1fr 0.05fr;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+.foot{
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    padding: 10px;
+    text-align: center;
+    margin-top: 30px;
+}
+.loginbutt{
+    padding: 10px;
+    height: 50px;
+    width: 100%;
+    background-color:#33CC66 ;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    margin-top: 50px;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+.regbutt{
+    padding: 10px;
+    height: 50px;
+    width: 100%;
+    background-color:#000000 ;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    margin-top: 20px;
+    color: white;
+
+}
+.loginbutt:hover{
+    background-color: #29a653;
+    cursor: pointer;
+}
+.regbutt:hover{
+    background-color: #222222;
+    cursor: pointer;
+}
+
+.loadicon{
+    /* margin-left:-16px ; */
+    width:fit-content;
+    /* border-radius: 100px; */
+    margin-top: 28px;
+    
+}

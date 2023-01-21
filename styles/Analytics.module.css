@@ -1,0 +1,15 @@
+.vow{
+    /* border: 1px solid; */
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+@media screen and (max-width:768px) {}
+
+@media screen and (max-width:425px) {
+    .vow{
+        grid-template-columns: 1fr;
+    }
+   
+}

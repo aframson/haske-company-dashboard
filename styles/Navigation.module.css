@@ -1,0 +1,18 @@
+.rep{
+    /* border: 1px solid; */
+    bottom: 0;
+    margin: auto;
+    position: fixed;
+    width: 180px;
+    z-index: 90000;
+    padding: 20px;
+    display: flex;
+    width: fit-content;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: var(--main-black);
+}
+
+.rep:hover{
+    background-color: rgb(235, 63, 63);
+}

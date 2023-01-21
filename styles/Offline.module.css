@@ -1,0 +1,48 @@
+.containers{
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    margin: auto;
+}
+.title{
+  color: white;
+  font-size: 30px;
+  padding: 10px;
+  text-align: center;
+  font-style: italic;
+}
+.who{
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+.offlinebox{
+    /* border: 5px solid white; */
+    width: 400px;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    padding: 20px;
+    margin: auto;
+    height: fit-content;
+}
+.sub{
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+}
+.imagebox{
+    height: fit-content;
+    width: fit-content;
+    /* border: 1px solid white; */
+}
+.image{
+    height: 55px;
+    width: fit-content;
+    object-fit: cover;
+}

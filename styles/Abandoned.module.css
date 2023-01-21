@@ -1,0 +1,46 @@
+#orderbox{
+    /* border: 1px solid; */
+    display: grid;
+    grid-template-columns: 1fr 0.18fr;
+    gap: 20px;
+}
+.imagebox1{
+    height: 100px;
+    width: 100px;
+    border: 1px solid;
+}
+.image1{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+.sub{
+    font-size: 14px;
+    color: gray;
+    padding: 20px;
+}
+.subtitle{
+    font-size: 18px;
+    font-weight: 500;
+    padding: 20px;
+}
+.enable{
+    background-color:var(--main-green-color);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    margin: 20px;
+    width: 100px;
+    cursor: pointer;
+}
+.enable:hover{
+    background-color: var(--main-green-color-hover);
+    cursor: pointer;
+}
+.link{
+    font-size: 13px;
+    color: gray;
+    padding: 20px;
+}

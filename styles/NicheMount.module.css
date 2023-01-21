@@ -1,0 +1,22 @@
+.subtitle{
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--main-black);
+    padding: 20px;
+    box-sizing: border-box;
+}
+.sub{
+    color: gray;
+    font-size: 13px;
+    padding: 20px;
+}
+.imagebox{
+    height: 150px;
+    width: 150px;
+    /* border: 1px solid; */
+}
+.image{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+}

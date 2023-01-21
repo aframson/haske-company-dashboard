@@ -1,0 +1,8 @@
+.infobox{
+    /* border: 1px solid; */
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0.001rem 0.001rem 5px var(--shadow-gray);
+    border-radius: 5px;
+    margin-top: 20px;
+}

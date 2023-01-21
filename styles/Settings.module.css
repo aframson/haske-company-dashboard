@@ -1,0 +1,293 @@
+.container {
+    /* border: 1px solid; */
+    padding: 20px;
+    width: 40%;
+    align-self: center;
+    margin: auto;
+}
+
+.emailbox {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    background-color: var(--main-black);
+    gap: 10px;
+    border-radius: 5px;
+}
+
+.content {
+    font-size: 14px;
+    color: rgb(208, 208, 208);
+}
+
+.verify {
+    height: 40px;
+    border-radius: 5px;
+    background-color: var(--main-green-color);
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.flip:hover {
+    cursor: pointer;
+}
+
+.flip {
+    padding-left: 20px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+.giued {
+    /* border: 1px solid; */
+    background-color: white;
+    margin-top: 50px;
+    border-radius: 5px;
+    box-shadow: 0.001rem 0.001rem 5px var(--shadow-gray);
+}
+
+.title {
+    font-size: 17px;
+    font-weight: 600;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.sub {
+    color: gray;
+    font-size: 13px;
+    padding-bottom: 10px;
+    padding: 20px;
+}
+
+.pp {
+    font-size: 13px;
+    color: rgb(48, 48, 48);
+}
+
+.imcov {
+    height: 100px;
+    width: 150px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.image {
+    height: 100px;
+    width: 150px;
+    object-fit: cover;
+}
+
+.cont {
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+}
+
+.tobutt {
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--main-black);
+    color: black;
+    font-weight: 500;
+    color: white;
+    width: 200px;
+    margin-top: 20px;
+}
+
+.tobutt:hover {
+    background-color: var(--main-green-color-hover);
+    cursor: pointer;
+}
+
+.questxt {
+    font-size: 15px;
+    margin-left: 10px;
+    margin-top: -2px;
+}
+
+.ques {
+    display: flex;
+}
+
+.acc {
+    border-top: 1px solid #dedede;
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+#goop {
+    background-color: rgb(1, 123, 229);
+    color: white;
+}
+
+.inp {
+    padding: 10px;
+    width: 98%;
+    border-radius: 5px;
+    border: 1px solid rgb(180, 180, 180);
+    font-size: 17px;
+    outline: none;
+    box-sizing: border-box;
+
+}
+
+.label {
+    padding-bottom: 5px;
+    padding-top: 15px;
+}
+
+#sele {
+    width: 98%;
+    height: 40px;
+}
+
+.gr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 99%;
+}
+
+.loginsection {
+    padding: 20px;
+}
+
+.passbox {
+    display: grid;
+    grid-template-columns: 1fr 0.05fr;
+
+}
+
+.msg {
+    background-color: #a3ffcb;
+    color: #1b8549;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.fileupload {
+    margin-left: 20px;
+    margin-top: -10px;
+}
+
+.imageboxx {
+    height: 100px;
+    width: 100px;
+    margin-left: 20px;
+    padding-bottom: 20px;
+}
+
+.imagex {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.progress {
+    height: 5px;
+    background-color: var(--main-green-color);
+    border-radius: 50px;
+    margin: 20px;
+}
+
+.progrssbox {
+    width: 95%;
+}
+
+.logocontainer {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d7d7d7;
+    width: 95%;
+    margin-left: 20px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.imagelogobebox {
+    height: 50px;
+    width: 50px;
+}
+
+.logoimage {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+
+.imagelogoboxcontainer {
+    display: grid;
+    grid-template-columns: 0.1fr 1fr 0.1fr;
+    margin-top: 10px;
+}
+
+.imagelogoboxcontainer:hover {
+    background-color: #f1f1f1;
+}
+
+.filename {
+    font-size: 18px;
+    margin: 13px;
+}
+
+.delbox {
+    border: 1px solid rgb(186, 186, 186);
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.delbox:hover {
+    background: rgb(220, 220, 220);
+}
+
+#coverImage {
+    width: 200px;
+    height: 150px;
+}
+
+#coverImagebox {
+    /* border: 1px solid; */
+    overflow: hidden;
+    border-radius: 5px;
+    height: 100px;
+    margin-top: 10px;
+}
+.color{
+    height: 70px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    overflow: hidden;
+}
+.colorcontainer{
+    border: 1px solid #dedede;
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.colorinp{
+    background-color: none;
+    font-size: 15px;
+    border: none;
+    padding: 10px;
+}
+.colorsubtitle{
+    font-size: 18px;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+.colorsub{
+    font-size: 14px;
+    padding-bottom: 10px;
+    color: gray;
+}

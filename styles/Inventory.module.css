@@ -1,0 +1,19 @@
+
+.paybutt{
+    height: 40px;
+    width: fit-content;
+    border:none;
+    border-radius: 5px;
+    background-color: var(--main-green-color);
+    color: white;
+    padding: 10px;
+}
+.paybutt:hover{
+    background-color: var(--main-green-color-hover);
+    cursor: pointer;
+}
+.link{
+    font-size: 13px;
+    color: gray;
+    padding: 20px;
+}
