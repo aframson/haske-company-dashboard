@@ -9,7 +9,7 @@ import Image from 'next/image';
 import ReactLoading from 'react-loading';
 import { useRouter } from 'next/router';
 import { State } from '../StateManagement';
-import { Adduser, delImageData,UpdateUser } from '../controllers/users';
+import { Adduser,UpdateUser } from '../controllers/users';
 import Select from 'react-select'
 import { fetch } from '../controllers/institution'
 
@@ -160,10 +160,7 @@ function AaddCard() {
     }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
 
 
-    const RemoveImage = (filename) => {
-        delImageData(id, filename, errMsg, setMsg, setLoading)
-    }
-
+  
 
 
     const handleProductChange = (data) => {
