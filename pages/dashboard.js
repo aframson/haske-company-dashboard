@@ -9,13 +9,27 @@ import { CheckUserAuthOut } from '../controllers/checkAuth';
 import ViewLayout from '../components/ViewLayout';
 import Link from 'next/link';
 import ReactPlayer from 'react-player/youtube'
-import SetiingsCover from '../components/settingsCov'
-import cov2 from '../public/assets/cov2.png'
+
+import logo from '../public/assets/icon2.png'
+import logo2 from '../public/assets/icone.png'
+
+
+import { GrConnectivity } from 'react-icons/gr';
+
+import Image from 'next/image';
+
+import { fetchLogo } from '../controllers/logo'
+
 
 export default function Dashboard() {
 
     const [checEmailkuser, setCheckEmailUser] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [mainlogo, setLogo] = useState(null)
+    const [add, setAdd] = useState('')
+    const [error, errMsg] = useState('')
+
+
     const [wri, setwri] = useState(`
     Hi there , you have not verified your email account ,
     this will not let you access to some previlages , kindly click on the verify button to do that.
@@ -25,6 +39,11 @@ export default function Dashboard() {
     useEffect(() => {
         CheckUserAuthOut(setLoading, setCheckEmailUser, router)
     }, [router])
+
+    useEffect(() => {
+        fetchLogo(setLogo, setLoading, setAdd, errMsg)
+    }, [setLogo, setLoading, setAdd, errMsg])
+
     return (
         <NavigationLayout>
             <ViewLayout title={"Home"}>
@@ -60,36 +79,39 @@ export default function Dashboard() {
                             )}
                     </>}
 
-                <SetiingsCover sub={`
-                    This is license agreement contract between the software supplier and a customer or end-user.
-                `}
-                    title={'v 0.0.1'}
-                    image={cov2}
-                    linkText={"Learn More"}
-                />
-                
-                <div id={styles.row}>
-                    <div className={styles.contentbox}>
-                        <div className={styles.vidbox}>
-                             <ReactPlayer
-                                light={true}
-                                width={'100%'}
-                                // height='100%'
-                                url='https://www.youtube.com/watch?v=783ccP__No8' />
+
+
+                <div className={styles.connect}>
+                    <center>
+                        <div id={styles.imagebox} className={styles.pals}>
+                            <Image src={logo} alt={'logo'} placeholder={'blur'} className={styles.imagex} />
                         </div>
+                    </center>
+                    <div className={styles.palsx}>
+                        <center>
+                            <GrConnectivity id={styles.ic} size={55} color='black' />
+                        </center>
                     </div>
-                    <div className={styles.contentbox}>
-                        <div className={styles.subtitle}>
-                            Lern how to use Niche seamlessly
-                        </div>
-                        <div className={styles.subx}>
-                            This is a list of video teaching you how to use the niche software ,
-                            kindly go through it if somthing bothers you.Incase you find the screen very
-                            little you can click on the youtube button to visit on the website
-                        </div>
-                        <button className={styles.talk}>Or Talk to a Niche personel </button>
-                    </div>
+                    {mainlogo ? <>
+                        {mainlogo && mainlogo.map((logo, i) => (
+                            <center>
+                                <div id={styles.imagebox} className={styles.pals}>
+                                    <Image blurDataURL={logo.image} src={logo.image} width={80} height={80} alt={'logo'} placeholder={'blur'} className={styles.imagex} />
+                                </div>
+                            </center>
+                        ))}
+                    </> :
+                        <>
+                            <center>
+                                <div id={styles.imagebox} className={styles.pals}>
+                                    <Image blurDataURL={''+logo2} src={logo2}  alt={'logo'} placeholder={'blur'} className={styles.imagex} />
+                                </div>
+                            </center>
+                        </>}
+
                 </div>
+
+
 
 
                 <div className={styles.giued}>

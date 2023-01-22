@@ -218,6 +218,47 @@
     background-color: var(--main-gray);
     cursor: pointer;
 }
+.connect{
+    /* border: 1px solid; */
+    align-self: center;
+    margin: auto;
+    box-sizing: border-box;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: fit-content;
+
+}
+.pals{
+    /* border: 1px solid; */
+    /* padding: 20px; */
+    width: fit-content;
+    background-color: black;
+    border-radius: 10px;
+}
+.palsx{
+    /* border: 1px solid; */
+    /* padding: 20px; */
+    width: fit-content;
+}
+#imagebox{
+    height: 80px;
+    width: 80px;
+    margin-top: 15px;
+}
+.imagex{
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+}
+#ic{
+    margin-top: 25px;
+    margin-left: 10px;
+}
+.ano{
+    background-color: black;
+}
+
 
 @media screen and (max-width:768px) {}
 

@@ -109,7 +109,7 @@ export async function fetchLogo(setImage, setLoading, setAdd, errMsg) {
             const mainData = [];
             querySnapshot.forEach((doc) => {
                 mainData.push({ id: doc.id, ...doc.data() })
-                // console.log(mainData)
+                console.log('logo:',mainData)
             });
             if (mainData.length > 0) {
                 setImage(mainData)
