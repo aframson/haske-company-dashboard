@@ -27,7 +27,7 @@ export const chooseImage = (file, setImageUrl, setFilename, setImageLocation) =>
 
 
 
-const addinstitution = async (title, description,filename, codeName,status, dominationsData, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
+const addinstitution = async (title, description,lat,lng,filename, codeName,status, dominationsData, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
     setLoading(true)
     try {
         const docRef = await addDoc(collection(db, TableName), {
@@ -36,6 +36,7 @@ const addinstitution = async (title, description,filename, codeName,status, domi
             name:title,
             description,
             status,
+            geolocation:[{lat,lng}],
             codeName
         });
         setMsg("Logo Added sucessfully")
@@ -91,7 +92,7 @@ export const handleUploadWhenUpdate = async (file,setFilename, setLoading, setPr
 
 }
 
-export const handleUpload = async (title, description,codeName,filename, status, dominationsData, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = async (title, description,lat,lng,codeName,filename, status, dominationsData, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     // get file name from file
     setLoading(true)
     const storage = getStorage();
@@ -121,7 +122,7 @@ export const handleUpload = async (title, description,codeName,filename, status,
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
-            addinstitution(title, description,uniquename,codeName,status, dominationsData, downloadURL, setMsg, errMsg, setLoading, setProgress);
+            addinstitution(title, description,lat,lng,uniquename,codeName,status, dominationsData, downloadURL, setMsg, errMsg, setLoading, setProgress);
         });
         setLoading(false)
     });

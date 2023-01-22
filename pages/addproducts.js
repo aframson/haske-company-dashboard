@@ -23,9 +23,10 @@ const ProductStatusOption = [
     { value: 'draft', label: 'Draft' }
 ]
 import { Fetch } from '../controllers/storeCurrency'
+import {fetchVendors} from '../controllers/vendors'
 
 
-
+const type = 'active'
 
 
 
@@ -38,7 +39,6 @@ function AddProducts() {
     const [isUpdate, setIspdate] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
     const [imageProgress, setImageProgress] = useState(0)
-    const [imageDeleteLoading, setImageDeleteLoading] = useState(false)
     const countryoptions = useMemo(() => countryList().getData(), [])
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -72,10 +72,13 @@ function AddProducts() {
     const [error, errMsg] = useState('')
     const { addToast } = useToasts()
     const [currency, setCurrency] = useState()
+    const [products, setProducts] = useState([])
+    const [getProducts, setGetProducts] = useState([])
+    const [loading2,setLoading2] = useState(false)
+    const [isproduct,setIsProduct] = useState()
 
     const router = useRouter()
-    const newValue = [title, pricing, description, weight, status, sku, cpp, comparePrice, barCode].join("");
-    const oldValue = useRef(newValue);
+  
 
 
 
@@ -111,6 +114,10 @@ function AddProducts() {
 
 
     useEffect(() => {
+        fetchVendors(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
+    }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
+
+    useEffect(() => {
 
         if (JSON.stringify(editData) === '{}' || editData === undefined) {
 
@@ -143,6 +150,7 @@ function AddProducts() {
             // others
             setKeywordData(editData.keywords)
             setProductStatus({ value: editData.status, label: editData.status })
+            setProducts(editData.vendor)
 
         }
 
@@ -187,7 +195,7 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(title, description,products, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setBarCode('')
             setDescription('')
             setComparePrice(0)
@@ -205,6 +213,7 @@ function AddProducts() {
             setImageUrl([])
             setImageLocation([])
             setProductStatus({ value: 'active', label: "active" })
+            setProducts([])
 
         }
     }
@@ -300,6 +309,17 @@ function AddProducts() {
 
 
 
+    const handleProductChange = (data) => {
+        setProducts(prev => [...prev, data])
+        console.log('after select', data)
+    }
+
+
+    const removeProd = (pid) => {
+        let data = products.filter(x => x.id !== pid)
+        setProducts(data)
+    }
+
 
     return (
         <NavigationLayout>
@@ -346,6 +366,48 @@ function AddProducts() {
 
                 <div className={styles.productBox}>
                     <div className={styles.side}>
+                    <NicheCard id={styles.pro}>
+                            <div className={styles.inpbox}>
+                                <div className={styles.title}>Who is selling this Product</div>
+                                <div className={styles.sub}>
+                                    Search or browse to add Vendor.
+                                </div>
+                                {products.length > 0?null:
+                                 <Select
+                                 placeholder={"Search or select Vendor"}
+                                 options={getProducts && getProducts.map((item, i) => {
+                                     return {
+                                         id: item.id,
+                                         label: item.storename,
+                                         value: { vendorId: item.id },
+                                         image: item.image
+                                     }
+
+                                 })}
+                                 formatOptionLabel={opt => (
+                                     <div className={styles.optionlistbox}>
+                                         <div className={styles.optionimagebox}>
+                                             <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                         </div>
+                                         <div className={styles.optionlistname} >{opt.label}</div>
+                                     </div>
+                                 )}
+                                 onChange={(value) => handleProductChange(value)} />
+                                }
+                            </div>
+                            {products && products.map((item, i) => (
+                                <div key={i} className={styles.optionlistbox}>
+                                    <MdDragIndicator style={{ marginTop: 0 }} size={30} color={'gray'} />
+                                    <div className={styles.optionimagebox}>
+                                        <Image blurDataURL={item.image} src={item.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                    </div>
+                                    <div className={styles.optionlistname} >{item.label}</div>
+                                    <div onClick={() => removeProd(item.id)} className={styles.optionlistname} >
+                                        <MdDelete style={{ marginTop: 0 }} size={30} color={'red'} />
+                                    </div>
+                                </div>
+                            ))}
+                        </NicheCard>
                         <NicheCard id={styles.pro} >
                             <div className={styles.inpbox}>
                                 <div className={styles.label}>Title</div>

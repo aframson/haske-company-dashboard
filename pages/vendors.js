@@ -14,7 +14,7 @@ import Select from 'react-select'
 import { fetchVendors } from '../controllers/vendors';
 import { useToasts } from 'react-toast-notifications'
 import Image from 'next/image';
-
+import Maps from '../components/Maps'
 
 
 function Vendors() {
@@ -113,6 +113,9 @@ function Vendors() {
                     ) : null}
                     {tabs === 'draft' ? (
                         <AllVendors type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
+                    ) : null}
+                     {tabs === 'map' ? (
+                        <Maps />
                     ) : null}
                     {loading ? (
                         <center>

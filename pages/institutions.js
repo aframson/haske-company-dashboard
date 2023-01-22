@@ -14,7 +14,7 @@ import Select from 'react-select'
 import { useToasts } from 'react-toast-notifications'
 import Image from 'next/image';
 import { fetch } from '../controllers/institution';
-
+import Maps from '../components/Maps'
 
 
 function Institution() {
@@ -73,6 +73,8 @@ function Institution() {
                         <div className={styles.tablist}>
                             <div onClick={() => setTabs('active')} style={{ borderBottomColor: tabs === 'active' ? '#31a658' : 'none', borderBottom: tabs === 'active' ? '5px solid #31a658' : 'none' }} className={styles.items}>Active</div>
                             <div onClick={() => setTabs('draft')} style={{ borderBottomColor: tabs === 'draft' ? '#31a658' : 'none', borderBottom: tabs === 'draft' ? '5px solid #31a658' : 'none' }} className={styles.items}>Draft</div>
+                            <div onClick={() => setTabs('map')} style={{ borderBottomColor: tabs === 'map' ? '#31a658' : 'none', borderBottom: tabs === 'map' ? '5px solid #31a658' : 'none' }} className={styles.items}>Map</div>
+
                         </div>
                         <div className={styles.items2}>
                         <Select
@@ -114,6 +116,9 @@ function Institution() {
                     ) : null}
                     {tabs === 'draft' ? (
                         <AllInstitution type={tabs} setLoad={setLoading} setIsProduct={setIsProduct} />
+                    ) : null}
+                     {tabs === 'map' ? (
+                       <Maps/>
                     ) : null}
                     {loading ? (
                         <center>

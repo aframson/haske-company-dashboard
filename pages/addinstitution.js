@@ -52,11 +52,12 @@ function AddInstitution() {
     const [add, setAdd] = useState(false)
     const [error, errMsg] = useState('')
     const [dominations, setDominations] = useState('')
-    const [dominationsData, setDominationData] = useState([10, 20, 30, 40, 50])
+    const [dominationsData, setDominationData] = useState([])
     const [currency, setCurrency] = useState()
     const [showUpdate, setShowUpdate] = useState(false)
     const [codename,setCodeName] = useState('')
-
+    const [lat, setLat] = useState('')
+    const [lng, setLng] = useState('')
 
     const { addToast } = useToasts()
 
@@ -105,6 +106,8 @@ function AddInstitution() {
             setImageLocation(editData.image)
             // others
             setStatus({ value: editData.status, label: editData.status })
+            setDominationData(editData.geolocation)
+
             // products
         }
 
@@ -132,7 +135,7 @@ function AddInstitution() {
         ) {
             addToast("Basic fields such us name , image, descrition and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description,codename, filename, status.value, dominationsData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(title, description,lat,lng,codename, filename, status.value, dominationsData, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setTitle('')
             setFilename('')
@@ -174,6 +177,18 @@ function AddInstitution() {
         delImageData(id, filename, errMsg, setMsg, setLoading)
     }
 
+    const AddKeywords = () => {
+        if (lat === '' || lng === '') {
+            addToast("Key world fields must not be empty", { appearance: 'warning', autoDismiss: true, })
+        } else {
+            setDominationData((prevData) => [...prevData, { lat: lat, lng: lng }])
+        }
+    }
+    const DeleteDomination = (name) => {
+        let newData = dominationsData.filter(x => x !== name)
+        setDominationData(newData)
+
+    }
 
 
 
@@ -230,6 +245,41 @@ function AddInstitution() {
                                 <div className={styles.label}>Description</div>
                                 <RichText text={description && description} setText={setDescription} placeholder={'Add a description'} width='99%' />
                             </div>
+                        </NicheCard>
+                        <NicheCard id={styles.pro}>
+                            <div className={styles.inpbox}>
+                                <div className={styles.title}> Geolocation</div>
+                                <div className={styles.sub}>
+                                    Add Store location
+                                </div>
+                            </div>
+                            {dominationsData.length > 0 ? null :
+                                <>
+                                    <div className={styles.inpbox}>
+                                        <div className={styles.label}>Latitude</div>
+                                        <input value={lat} onChange={(e) => setLat(e.target.value)} type={"number"} placeholder={"eg. 1.374647"} className={styles.inp} />
+                                    </div>
+
+                                    <div className={styles.inpbox}>
+                                        <div className={styles.label}>Longitude</div>
+                                        <input value={lng} onChange={(e) => setLng(e.target.value)} type={"number"} placeholder={"eg. -3.44567"} className={styles.inp} />
+                                        <button onClick={() => AddKeywords()} className={styles.addop}>Add data</button>
+                                    </div>
+                                </>
+                            }
+
+
+                            <div className={styles.list}>
+                                {dominationsData && dominationsData.map((item, i) => (
+                                    <div key={i} className={styles.optionbox}>
+                                        <MdDragIndicator size={30} color={'gray'} />
+                                        <div className={styles.optiontxt}>lat: {item.lat}</div>
+                                        <div className={styles.optiontxt}>lng: {item.lng}</div>
+                                        <MdDelete onClick={() => DeleteDomination(item)} size={30} color={'black'} />
+                                    </div>
+                                ))}
+                            </div>
+
                         </NicheCard>
                     </div>
                     <div className={styles.side}>
