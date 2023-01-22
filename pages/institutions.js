@@ -152,6 +152,7 @@ function Institution() {
                                         let lng = parseFloat(item.lng)
                                         return  (
                                             <Marker
+                                                key={i}
                                                 onLoad={onLoad}
                                                 position={{lat:lat,lng:lng}}
                                             />

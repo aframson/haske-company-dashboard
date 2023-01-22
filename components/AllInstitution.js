@@ -72,7 +72,7 @@ export default function AllInstitution({ setIsProduct, setLoad ,type}) {
   
   useEffect(() => {
     fetch(setCollection, setLoading, setAdd, errMsg, setIsProduct, setLoad,type)
-  }, [setCollection, setLoading, setAdd, errMsg, setIsProduct, setLoad])
+  }, [setCollection, setLoading, setAdd, errMsg, setIsProduct, setLoad,type])
 
 
 

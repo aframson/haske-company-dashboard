@@ -94,7 +94,7 @@ export default function Dashboard() {
                     </div>
                     {mainlogo ? <>
                         {mainlogo && mainlogo.map((logo, i) => (
-                            <center>
+                            <center key={i}>
                                 <div id={styles.imagebox} className={styles.pals}>
                                     <Image blurDataURL={logo.image} src={logo.image} width={80} height={80} alt={'logo'} placeholder={'blur'} className={styles.imagex} />
                                 </div>

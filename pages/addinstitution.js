@@ -80,7 +80,7 @@ function AddInstitution() {
                 setShowUpdate(true);
             }
         }
-    }, [title, description, status, dominationsData, editData]);
+    }, [title, description, status, dominationsData, editData,codename]);
 
 
 
