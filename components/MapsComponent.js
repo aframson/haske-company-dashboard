@@ -1,32 +1,33 @@
 import React from "react";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-export default function SimpleMap() {
+export default function MapComponent({ lat, lng }) {
     const containerStyle = {
         width: '100%',
-        height: '500px'
+        height: '200px'
     };
     const center = {
-        lat: -3.745,
-        lng: -38.523
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
     };
     const position = {
-        lat: -3.745,
-        lng: -38.523
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
     }
     const onLoad = marker => {
         console.log('marker: ', marker)
     }
     return (
         // Important! Always set the container height explicitly
-        <div style={{ height: '500px', width: '100%' }}>
+        <div style={{ height: '200px', width: '100%' }}>
             <LoadScript
                 googleMapsApiKey="AIzaSyDVo1XN3CgWBV8tnc0941TqdBKe1ZQrdns"
+
             >
                 <GoogleMap
                     mapContainerStyle={containerStyle}
                     center={center}
-                    zoom={5}
+                    zoom={17}
                 >
                     <Marker
                         onLoad={onLoad}

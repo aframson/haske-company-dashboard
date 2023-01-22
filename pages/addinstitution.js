@@ -13,13 +13,11 @@ import dynamic from 'next/dynamic'
 import ReactLoading from 'react-loading';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select'
-import countryList from 'react-select-country-list'
-import CurrencyInput from 'react-currency-input-field';
+
 const RichText = dynamic(() => import('../components/RichText'), { ssr: false })
 import { State } from '../StateManagement';
-import { fetchProducts } from '../controllers/products'
-import { Fetch } from '../controllers/storeCurrency'
 
+import MapComponent from '../components/MapsComponent';
 
 const type = 'active'
 
@@ -55,7 +53,7 @@ function AddInstitution() {
     const [dominationsData, setDominationData] = useState([])
     const [currency, setCurrency] = useState()
     const [showUpdate, setShowUpdate] = useState(false)
-    const [codename,setCodeName] = useState('')
+    const [codename, setCodeName] = useState('')
     const [lat, setLat] = useState('')
     const [lng, setLng] = useState('')
 
@@ -73,6 +71,7 @@ function AddInstitution() {
                 editData.name === title &&
                 editData.description === description &&
                 editData.codeName === codename &&
+                editData.geolocation === dominationsData &&
                 editData.status === status.value
             ) {
                 setShowUpdate(false);
@@ -135,7 +134,7 @@ function AddInstitution() {
         ) {
             addToast("Basic fields such us name , image, descrition and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description,lat,lng,codename, filename, status.value, dominationsData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(title, description, lat, lng, codename, filename, status.value, dominationsData, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setTitle('')
             setFilename('')
@@ -158,7 +157,7 @@ function AddInstitution() {
                 description: description,
                 filename: filename,
                 image: imageurl,
-                dominationsData: dominationsData,
+                geolocation: dominationsData,
                 status: status.value
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
@@ -170,7 +169,7 @@ function AddInstitution() {
     }
 
 
- 
+
 
 
     const RemoveImage = (filename) => {
@@ -247,6 +246,11 @@ function AddInstitution() {
                             </div>
                         </NicheCard>
                         <NicheCard id={styles.pro}>
+                            
+                            {dominationsData && dominationsData.map((item,i)=>(
+                                <MapComponent key={i} lat={item.lat} lng={item.lng} />
+                            ))}
+
                             <div className={styles.inpbox}>
                                 <div className={styles.title}> Geolocation</div>
                                 <div className={styles.sub}>
@@ -257,12 +261,12 @@ function AddInstitution() {
                                 <>
                                     <div className={styles.inpbox}>
                                         <div className={styles.label}>Latitude</div>
-                                        <input value={lat} onChange={(e) => setLat(e.target.value)} type={"number"} placeholder={"eg. 1.374647"} className={styles.inp} />
+                                        <input defau={lat} onChange={(e) => setLat(e.target.value)} type={"number"} placeholder={"eg. 1.374647"} className={styles.inp} />
                                     </div>
 
                                     <div className={styles.inpbox}>
                                         <div className={styles.label}>Longitude</div>
-                                        <input value={lng} onChange={(e) => setLng(e.target.value)} type={"number"} placeholder={"eg. -3.44567"} className={styles.inp} />
+                                        <input defaultValue={lng} onChange={(e) => setLng(e.target.value)} type={"number"} placeholder={"eg. -3.44567"} className={styles.inp} />
                                         <button onClick={() => AddKeywords()} className={styles.addop}>Add data</button>
                                     </div>
                                 </>
