@@ -85,7 +85,7 @@ function AddVendors() {
                 editData.ownername === ownername &&
                 editData.storename === storename &&
                 editData.description === description &&
-                editData.products === products &&
+                editData.institution === products &&
                 editData.status === status.value
             ) {
                 setShowUpdate(false);
@@ -271,7 +271,7 @@ function AddVendors() {
                         </NicheCard>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>Add Institution To Vendor</div>
+                                <div className={styles.title}>Add Vendor To Institution</div>
                                 <div className={styles.sub}>
                                     Search or browse to add institution.
                                 </div>

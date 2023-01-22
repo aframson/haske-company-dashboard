@@ -7,6 +7,75 @@ import { USER_TABLE } from '../shema/index'
 const TableName = 'users'
 
 
+
+// unique random string numbers
+const code = () => {
+    return Math.random().toString(5).substring(2, 5) + Math.random().toString(5).substring(2, 5)
+}
+
+const random = () => {
+    return Math.random().toString(36).substring(2, 15) 
+}
+
+
+
+export const chooseImage = (file, setImageUrl, setFilename, setImageLocation) => {
+    let value = URL.createObjectURL(file);
+    setImageUrl(value);
+    setFilename(file.name)
+    setImageLocation(file)
+    console.log(value)
+}
+
+
+
+
+
+
+ export async function UpdateUser(id, data, setLoading, setMsg, errMsg,setProgress) {
+    setLoading(true)
+    try {
+        const q = doc(db, TableName, id);
+        // const querySnapshot = await getDocs(q);
+        await updateDoc(q, {
+            metaData:data.metaData,
+            institution:data.institution,
+            name:data.name,
+            telephone:data.telephone
+        })
+        setLoading(false)
+        setMsg("Data Updated Sucessfully")
+        console.log('Data Updated Sucessfully')
+        setProgress(0)
+    } catch (error) {
+        errMsg("Data could not update")
+        console.log(error)
+        setLoading(false)
+        setProgress(0)
+    }
+}
+
+
+
+
+export const delData = async (id, errMsg, setMsg, setLoading) => {
+    setLoading(true)
+    try {
+        const del = doc(db, TableName, id)
+        const storage = getStorage();
+        await deleteDoc(del)
+        setMsg("Updated successfully")
+        setLoading(false)
+    } catch (error) {
+        console.log(error)
+        errMsg('Could not Delete Logo')
+        setLoading(false)
+    }
+
+}
+
+
+
 export async function fetchUsers(setUsers, setLoading, setAdd, errMsg, setIsUser, setLoad) {
     setLoading(true)
     try {
@@ -39,10 +108,10 @@ export async function fetchUsers(setUsers, setLoading, setAdd, errMsg, setIsUser
 
 
 
-export const Adduser = async (username, telephone, metadata, setLoading, setMsg, errMsg) => {
+export const Adduser = async (username, telephone, metadata,products, setLoading, setMsg, errMsg) => {
     setLoading(true)
     try {
-        await addDoc(collection(db, TableName), USER_TABLE(metadata, telephone, username))
+        await addDoc(collection(db, TableName), USER_TABLE(metadata,telephone, username,products))
         setMsg("User Created Successfully")
         setLoading(false)
     } catch (error) {

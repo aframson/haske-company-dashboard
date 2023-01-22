@@ -9,18 +9,12 @@ import Image from 'next/image';
 import ReactLoading from 'react-loading';
 import { useRouter } from 'next/router';
 import { State } from '../StateManagement';
-import {FaUserCircle } from 'react-icons/fa'
-import { Adduser } from '../controllers/users';
+import { Adduser, delImageData,UpdateUser } from '../controllers/users';
+import Select from 'react-select'
+import { fetch } from '../controllers/institution'
 
 
 const type = 'active'
-
-
-const ProductStatusOption = [
-    { value: 'active', label: 'Active' },
-    { value: 'draft', label: 'Draft' }
-]
-
 
 
 function AaddCard() {
@@ -30,9 +24,7 @@ function AaddCard() {
 
     const [isUpdate, setIspdate] = useState(false)
 
-    const [status, setStatus] = useState({ value: 'active', label: "Active" })
     const [id, setId] = useState()
-    const [imageLocation, setImageLocation] = useState('')
     const [Progress, setProgress] = useState(0)
     const [loading, setLoading] = useState(false)
     const [msg, setMsg] = useState('')
@@ -44,7 +36,10 @@ function AaddCard() {
     const [phone, setPhoneNumber] = useState('')
     const [metaDataname, setMetaDataName] = useState('')
     const [metaDataValue, setMetaDataValue] = useState('')
-
+    const [products, setProducts] = useState([])
+    const [getProducts, setGetProducts] = useState([])
+    const [isProduct, setIsProduct] = useState(false)
+    const [loading2, setLoading2] = useState(false)
 
 
     const { addToast } = useToasts()
@@ -59,7 +54,8 @@ function AaddCard() {
         } else {
             if (
                 editData.name === username &&
-                editData.dominationsData === dominationsData &&
+                editData.metaData === dominationsData &&
+                editData.institution === products &&
                 editData.telephone === phone
             ) {
                 setShowUpdate(false);
@@ -68,7 +64,7 @@ function AaddCard() {
                 setShowUpdate(true);
             }
         }
-    }, [username, phone, dominationsData, editData]);
+    }, [username, phone, products, dominationsData, editData]);
 
 
 
@@ -87,7 +83,8 @@ function AaddCard() {
             setUserName(editData.name)
             setPhoneNumber(editData.telephone)
             // others
-            setDominationData(editData.metadata)
+            setDominationData(editData.metaData)
+            setProducts(editData.institution)
         }
 
     }, [editData])
@@ -107,13 +104,15 @@ function AaddCard() {
     const AddUserhandler = () => {
         if (
             username === '' ||
-            phone == '' 
+            products === '' ||
+            phone === ''
         ) {
             addToast("Basic fields such us name and  phone must be filled.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            Adduser(username,phone,dominationsData,setLoading,setMsg,errMsg)
+            Adduser(username, phone, dominationsData, products, setLoading, setMsg, errMsg)
             setUserName('')
             setPhoneNumber('')
+            setProducts([])
             setDominationData([])
         }
     }
@@ -121,25 +120,26 @@ function AaddCard() {
 
     const updateGiftCard = () => {
         if (
-            imageurl === '' ||
-            title === '' ||
-            description === ''
-            ) {
-            addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
+            username === '' ||
+            products === '' ||
+            phone == ''
+        ) {
+            addToast("Basic fields such us name and  phone must be filled.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            let data = {
-                title: title,
-                description: description,
-                filename: filename,
-                image: imageurl,
-                dominationsData: dominationsData,
-                status: status.value
+            const data = {
+                metaData:dominationsData,
+                telephone:phone,
+                name:username,
+                institution:products
             }
             UpdateUser(id, data, setLoading, setMsg, errMsg, setProgress)
         }
+
+      
+
     }
 
-  
+
 
     const DeleteDomination = (name) => {
         let newData = dominationsData.filter(x => x !== name)
@@ -148,12 +148,16 @@ function AaddCard() {
     }
 
     const AddKeywords = () => {
-        if (metaDataname === '' || metaDataValue === ''){
+        if (metaDataname === '' || metaDataValue === '') {
             addToast("Key world fields must not be empty", { appearance: 'warning', autoDismiss: true, })
-        }else{
-            setDominationData((prevData) => [...prevData,{name:metaDataname,value:metaDataValue}])
+        } else {
+            setDominationData((prevData) => [...prevData, { name: metaDataname, value: metaDataValue }])
         }
     }
+
+    useEffect(() => {
+        fetch(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
+    }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
 
 
     const RemoveImage = (filename) => {
@@ -162,6 +166,14 @@ function AaddCard() {
 
 
 
+    const handleProductChange = (data) => {
+        setProducts(prev => [...prev, data])
+        console.log('after select', data)
+    }
+    const removeProd = (pid) => {
+        let data = products.filter(x => x.id !== pid)
+        setProducts(data)
+    }
 
 
     return (
@@ -212,12 +224,55 @@ function AaddCard() {
                             </div>
                         </NicheCard>
 
+                        <NicheCard id={styles.pro}>
+                            <div className={styles.inpbox}>
+                                <div className={styles.title}>Add User To Institution</div>
+                                <div className={styles.sub}>
+                                    Search or browse to add institution.
+                                </div>
+                                {products.length > 0 ? null :
+                                    <Select
+                                        placeholder={"Search or select product"}
+                                        options={getProducts && getProducts.map((item, i) => {
+                                            return {
+                                                id: item.id,
+                                                label: item.name,
+                                                value: { institutionId: item.id },
+                                                image: item.image
+                                            }
+
+                                        })}
+                                        formatOptionLabel={opt => (
+                                            <div className={styles.optionlistbox}>
+                                                <div className={styles.optionimagebox}>
+                                                    <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                                </div>
+                                                <div className={styles.optionlistname} >{opt.label}</div>
+                                            </div>
+                                        )}
+                                        onChange={(value) => handleProductChange(value)} />
+                                }
+
+                            </div>
+                            {products && products.map((item, i) => (
+                                <div key={i} className={styles.optionlistbox}>
+                                    <MdDragIndicator style={{ marginTop: 0 }} size={30} color={'gray'} />
+                                    <div className={styles.optionimagebox}>
+                                        <Image blurDataURL={item.image} src={item.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                    </div>
+                                    <div className={styles.optionlistname} >{item.label}</div>
+                                    <div onClick={() => removeProd(item.id)} className={styles.optionlistname} >
+                                        <MdDelete style={{ marginTop: 0 }} size={30} color={'red'} />
+                                    </div>
+                                </div>
+                            ))}
+                        </NicheCard>
 
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
                                 <div className={styles.title}> Metadata</div>
                                 <div className={styles.sub}>
-                                    Add optional value to the user 
+                                    Add optional value to the user
                                 </div>
                             </div>
                             <div className={styles.inpbox}>

@@ -46,11 +46,12 @@ export const PRODUCT_TABLE = (institution, businessName, password, username, ema
 }
 
 
-export const USER_TABLE = (metaData, telephone,name) => {
+export const USER_TABLE = (metaData,telephone,name,products) => {
     return {
         metaData,
         telephone,
         name,
+        institution:products,
         createdAt: getDate(),
     }
 }

@@ -13,8 +13,9 @@ import { useRouter } from 'next/router';
 import Select from 'react-select'
 import ReactLoading from 'react-loading';
 import AllUsers from '../components/Allusers';
-import icon from '../public/assets/icon2.png'
-import Image from 'next/image';
+
+import { FaUserCircle } from 'react-icons/fa';
+
 
 function Customers() {
 
@@ -85,7 +86,7 @@ function Customers() {
                                 formatOptionLabel={opt => (
                                     <div className={styles.optionlistbox}>
                                         <div className={styles.optionimagebox}>
-                                            <Image  src={icon} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                            <FaUserCircle size={25} color='black' />
                                         </div>
                                         <div className={styles.optionlistname} >{opt.label}</div>
                                     </div>

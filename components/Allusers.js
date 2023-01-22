@@ -7,7 +7,8 @@ import Image from 'next/image';
 import { Fetch } from '../controllers/storeCurrency'
 import { useRouter } from 'next/router';
 import { State } from '../StateManagement';
-import { fetchUsers } from '../controllers/users';
+import { fetchUsers,delData } from '../controllers/users';
+import { FaUserCircle } from 'react-icons/fa';
 
 import icon from '../public/assets/icon2.png'
 
@@ -61,10 +62,10 @@ export default function AllUsers({ setIsProduct, setLoad }) {
 
 
 
-  const Delete = (id, filename, errMsg, setMsg, setLoading, setCollection, collectionData) => {
+  const Delete = (id, errMsg, setMsg, setLoading) => {
     setdeId(id)
     if (confirm("Are you sure you want to do that?")) {
-      delData(id, filename, errMsg, setMsg, setLoading, setCollection, collectionData)
+      delData(id, errMsg, setMsg, setLoading)
       console.log("Ok was pressed");
     } else {
       // add code if the user pressed the Cancel button
@@ -93,7 +94,7 @@ export default function AllUsers({ setIsProduct, setLoad }) {
           <div key={i} className={styles.body}>
             <div id={styles.pnai} className={styles.tb}>
               <div className={styles.imaagebox}>
-                <Image  src={icon} alt="product-image" height={35} width={35} className={styles.imagex} />
+                <FaUserCircle size={30} color='black'/>
               </div>
               <div className={styles.productname}>
                 {item.name}
@@ -105,7 +106,7 @@ export default function AllUsers({ setIsProduct, setLoad }) {
             <div onClick={() => setDataToBrEdited(item)} id={styles.action2} className={styles.tb}>
               {loading && delid === item.id ? <ReactLoading width={20} height={20} color="black" /> : <MdEdit size={20} color="black" />}
             </div>
-            <div onClick={() => Delete(item.id, item.filename, errMsg, setMsg, setLoading2, setCollection, collectionData)} id={styles.action} className={styles.tb}>
+            <div onClick={() => Delete(item.id, errMsg, setMsg, setLoading2)} id={styles.action} className={styles.tb}>
               {loading2 && delid === item.id ? (<center><ReactLoading color={'black'} height={20} width={20} /></center>) : <MdDelete size={20} color="black" />}
             </div>
           </div>
