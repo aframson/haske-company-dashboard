@@ -229,7 +229,7 @@ function AaddCard() {
                                 </div>
                                 {products.length > 0 ? null :
                                     <Select
-                                        placeholder={"Search or select product"}
+                                        placeholder={"Search or select Institution"}
                                         options={getProducts && getProducts.map((item, i) => {
                                             return {
                                                 id: item.id,

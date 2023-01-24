@@ -16,7 +16,7 @@ import Select from 'react-select'
 const RichText = dynamic(() => import('../components/RichText'), { ssr: false })
 import { State } from '../StateManagement';
 import { fetch } from '../controllers/institution'
-
+import MapComponent from '../components/MapsComponent';
 
 
 const type = 'active'
@@ -62,8 +62,8 @@ function AddVendors() {
     const [lat, setLat] = useState('')
     const [lng, setLng] = useState('')
     const [dominationsData, setDominationData] = useState([])
-    const [ownername,setOwnername] = useState('')
-    const [storename,setStoreName] = useState('')
+    const [ownername, setOwnername] = useState('')
+    const [storename, setStoreName] = useState('')
 
     const { addToast } = useToasts()
 
@@ -94,7 +94,7 @@ function AddVendors() {
                 setShowUpdate(true);
             }
         }
-    }, [ownername,storename,description, status, products, editData]);
+    }, [ownername, storename, description, status, products, editData]);
 
 
 
@@ -150,7 +150,7 @@ function AddVendors() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(ownername,storename,lat,lng,description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(ownername, storename, lat, lng, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setOwnername('')
             setStoreName('')
@@ -373,6 +373,11 @@ function AddVendors() {
                         }
 
                         <NicheCard id={styles.pro}>
+
+                            {dominationsData && dominationsData.map((item, i) => (
+                                <MapComponent key={i} lat={item.lat} lng={item.lng} />
+                            ))}
+
                             <div className={styles.inpbox}>
                                 <div className={styles.title}> Geolocation</div>
                                 <div className={styles.sub}>
