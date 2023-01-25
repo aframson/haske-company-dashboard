@@ -142,7 +142,7 @@ export async function UpdateImage(id, image, setLoading, setMsg, errMsg, setProg
 }
 
 
-export const handleUpload = (title, description,products, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = (title, description,products,products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     setLoading(true)
     const promises = []
     const images = [];
@@ -168,6 +168,7 @@ export const handleUpload = (title, description,products, pricing, comparePrice,
                     console.log("new images ===", images);
                     const exportData = {
                         vendor:products,
+                        institution:products2,
                         discount:0,
                         info: {
                             title: title,

@@ -23,7 +23,8 @@ const ProductStatusOption = [
     { value: 'draft', label: 'Draft' }
 ]
 import { Fetch } from '../controllers/storeCurrency'
-import {fetchVendors} from '../controllers/vendors'
+import { fetchVendors } from '../controllers/vendors'
+import { fetch } from '../controllers/institution'
 
 
 const type = 'active'
@@ -74,11 +75,15 @@ function AddProducts() {
     const [currency, setCurrency] = useState()
     const [products, setProducts] = useState([])
     const [getProducts, setGetProducts] = useState([])
-    const [loading2,setLoading2] = useState(false)
-    const [isproduct,setIsProduct] = useState()
+    const [loading2, setLoading2] = useState(false)
+    const [isproduct, setIsProduct] = useState()
+
+
+    const [products2, setProducts2] = useState([])
+    const [getProducts2, setGetProducts2] = useState([])
 
     const router = useRouter()
-  
+
 
 
 
@@ -101,7 +106,9 @@ function AddProducts() {
                 editData.shipping.weight === weight &&
                 editData.shipping.country === country &&
                 editData.keywords === keywordData &&
-                editData.status === status.value
+                editData.status === status.value &&
+                editData.vendor === products &&
+                editData.institution === products2
             ) {
                 setShowUpdate(false);
             }
@@ -109,13 +116,18 @@ function AddProducts() {
                 setShowUpdate(true);
             }
         }
-    }, [optionData, country, hs, title, pricing, description, weight, status, sku, cpp, comparePrice, barCode, editData, numberAvailable, customsInfo, keywordData]);
+    }, [products, products2, optionData, country, hs, title, pricing, description, weight, status, sku, cpp, comparePrice, barCode, editData, numberAvailable, customsInfo, keywordData]);
 
 
 
     useEffect(() => {
         fetchVendors(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
-    }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
+    }, [setGetProducts, setLoading, errMsg, setIsProduct, setLoading2])
+
+
+    useEffect(() => {
+        fetch(setGetProducts2, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
+    }, [setGetProducts2, setLoading, errMsg, setIsProduct, setLoading2])
 
     useEffect(() => {
 
@@ -151,6 +163,7 @@ function AddProducts() {
             setKeywordData(editData.keywords)
             setProductStatus({ value: editData.status, label: editData.status })
             setProducts(editData.vendor)
+            setProducts2(editData.institution)
 
         }
 
@@ -187,6 +200,8 @@ function AddProducts() {
     const AddProduct = () => {
         if (
             imageLocation === '' ||
+            products.length < 0 ||
+            products2.length < 0 ||
             title === '' ||
             description === '' ||
             pricing === 0 ||
@@ -195,7 +210,11 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description,products, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(title, description, products,products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            setProducts([])
+            setProducts2([])
+            setGetProducts2([])
+            setGetProducts([])
             setBarCode('')
             setDescription('')
             setComparePrice(0)
@@ -213,8 +232,6 @@ function AddProducts() {
             setImageUrl([])
             setImageLocation([])
             setProductStatus({ value: 'active', label: "active" })
-            setProducts([])
-
         }
     }
 
@@ -254,7 +271,9 @@ function AddProducts() {
                     hs: hs
                 },
                 options: optionData,
-                keywords: keywordData
+                keywords: keywordData,
+                vendor:products,
+                institution:products2
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
@@ -315,9 +334,22 @@ function AddProducts() {
     }
 
 
+
+    const handleProductChange2 = (data) => {
+        setProducts2(prev => [...prev, data])
+        console.log('after select', data)
+    }
+
+
     const removeProd = (pid) => {
         let data = products.filter(x => x.id !== pid)
         setProducts(data)
+    }
+
+
+    const removeProd2 = (pid) => {
+        let data = products2.filter(x => x.id !== pid)
+        setProducts2(data)
     }
 
 
@@ -366,33 +398,80 @@ function AddProducts() {
 
                 <div className={styles.productBox}>
                     <div className={styles.side}>
-                    <NicheCard id={styles.pro}>
+                        <NicheCard id={styles.pro}>
+                            <div className={styles.inpbox}>
+                                <div className={styles.title}>What institution does this product belong</div>
+                                <div className={styles.sub}>
+                                    Search or browse to add Vendor.
+                                </div>
+                                <Select
+                                    placeholder={"Search or select Institution"}
+                                    options={getProducts2 && getProducts2.map((item, i) => {
+                                        return {
+                                            id: item.id,
+                                            label: item.name,
+                                            value: { institutionId: item.id },
+                                            image: item.image
+                                        }
+
+                                    })}
+                                    formatOptionLabel={opt => (
+                                        <div className={styles.optionlistbox}>
+                                            <div className={styles.optionimagebox}>
+                                                <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                            </div>
+                                            <div className={styles.optionlistname} >{opt.label}</div>
+                                        </div>
+                                    )}
+                                    onChange={(value) => handleProductChange2(value)} />
+                            </div>
+
+
+                            {products2 && products2.map((item, i) => (
+                                <div key={i} className={styles.optionlistbox}>
+                                    <MdDragIndicator style={{ marginTop: 0 }} size={30} color={'gray'} />
+                                    <div className={styles.optionimagebox}>
+                                        <Image blurDataURL={item.image} src={item.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                    </div>
+                                    <div className={styles.optionlistname} >{item.label}</div>
+                                    <div onClick={() => removeProd2(item.id)} className={styles.optionlistname} >
+                                        <MdDelete style={{ marginTop: 0 }} size={30} color={'red'} />
+                                    </div>
+                                </div>
+                            ))}
+                        </NicheCard>
+
+
+
+
+
+                        <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
                                 <div className={styles.title}>Who is selling this Product</div>
                                 <div className={styles.sub}>
                                     Search or browse to add Vendor.
                                 </div>
-                                {products.length > 0?null:
-                                 <Select
-                                 placeholder={"Search or select Vendor"}
-                                 options={getProducts && getProducts.map((item, i) => {
-                                     return {
-                                         id: item.id,
-                                         label: item.storename,
-                                         value: { vendorId: item.id },
-                                         image: item.image
-                                     }
+                                {products.length > 0 ? null :
+                                    <Select
+                                        placeholder={"Search or select Vendor"}
+                                        options={getProducts && getProducts.map((item, i) => {
+                                            return {
+                                                id: item.id,
+                                                label: item.storename,
+                                                value: { vendorId: item.id },
+                                                image: item.image
+                                            }
 
-                                 })}
-                                 formatOptionLabel={opt => (
-                                     <div className={styles.optionlistbox}>
-                                         <div className={styles.optionimagebox}>
-                                             <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
-                                         </div>
-                                         <div className={styles.optionlistname} >{opt.label}</div>
-                                     </div>
-                                 )}
-                                 onChange={(value) => handleProductChange(value)} />
+                                        })}
+                                        formatOptionLabel={opt => (
+                                            <div className={styles.optionlistbox}>
+                                                <div className={styles.optionimagebox}>
+                                                    <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                                </div>
+                                                <div className={styles.optionlistname} >{opt.label}</div>
+                                            </div>
+                                        )}
+                                        onChange={(value) => handleProductChange(value)} />
                                 }
                             </div>
                             {products && products.map((item, i) => (
@@ -408,6 +487,8 @@ function AddProducts() {
                                 </div>
                             ))}
                         </NicheCard>
+
+
                         <NicheCard id={styles.pro} >
                             <div className={styles.inpbox}>
                                 <div className={styles.label}>Title</div>
