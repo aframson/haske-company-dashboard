@@ -156,7 +156,7 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(institutionId,title, description, filename, status.value, products, products2, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionId[0],title, description, filename, status.value, products, products2, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setTitle('')
             setFilename('')
@@ -185,7 +185,7 @@ function AddProducts() {
                 products: products,
                 status: status.value,
                 institution: products2,
-                institutionId:institutionId
+                institutionId:institutionId[0]
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
@@ -221,7 +221,7 @@ function AddProducts() {
     const handleProductChange2 = (data) => {
         setProducts2(prev => [...prev, data])
         // console.log('after select', products2)
-        setInstitutionId(data.id)
+        setInstitutionId(prev => [...prev, data.id])
     }
 
     const removeProd2 = (pid) => {
