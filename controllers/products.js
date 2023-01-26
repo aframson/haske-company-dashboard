@@ -282,7 +282,7 @@ export async function fetchProductsByInstitution(setProductData, institutions, s
     console.log('inst ids :',institutions)
     try {
 
-        const q = query(collection(db, TableName), where('institutionIds', 'in',institutions));
+        const q = query(collection(db, TableName), where('institutionIds', 'in', institutions));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const mainData = [];
             querySnapshot.forEach((doc) => {

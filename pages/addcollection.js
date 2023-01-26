@@ -129,7 +129,7 @@ function AddProducts() {
             // products
             setProducts(editData.products)
             setProducts2(editData.institution)
-            setInstitutionId([editData.setInstitutionId])
+            setInstitutionId([editData.institutionId])
 
         }
 
