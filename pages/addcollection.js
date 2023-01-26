@@ -221,7 +221,7 @@ function AddProducts() {
     const handleProductChange2 = (data) => {
         setProducts2(prev => [...prev, data])
         // console.log('after select', products2)
-        setInstitutionId(prev => [...prev, data.id])
+        setInstitutionId(data.id)
     }
 
     const removeProd2 = (pid) => {
