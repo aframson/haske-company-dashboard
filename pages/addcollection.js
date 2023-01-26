@@ -58,7 +58,7 @@ function AddProducts() {
     const [error, errMsg] = useState('')
     const [isProduct, setIsProduct] = useState(false)
     const [showUpdate, setShowUpdate] = useState(false)
-    const [institutionId, setInstitutionId] = useState('')
+    const [institutionId, setInstitutionId] = useState([])
 
 
     const [products2, setProducts2] = useState([])
@@ -129,7 +129,7 @@ function AddProducts() {
             // products
             setProducts(editData.products)
             setProducts2(editData.institution)
-            setInstitutionId(editData.setInstitutionId)
+            setInstitutionId([editData.setInstitutionId])
 
         }
 
