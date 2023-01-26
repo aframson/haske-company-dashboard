@@ -64,6 +64,7 @@ function AddVendors() {
     const [dominationsData, setDominationData] = useState([])
     const [ownername, setOwnername] = useState('')
     const [storename, setStoreName] = useState('')
+    const [institutionId,setInstitutionId] = useState('')
 
     const { addToast } = useToasts()
 
@@ -73,6 +74,7 @@ function AddVendors() {
 
     const handleProductChange = (data) => {
         setProducts(prev => [...prev, data])
+        setInstitutionId(data.id)
         console.log('after select', data)
     }
 
@@ -124,6 +126,7 @@ function AddVendors() {
             setProductStatus({ value: editData.status, label: editData.status })
             // products
             setProducts(editData.institution)
+            setInstitutionId(editData.institutionId)
         }
 
     }, [editData])
@@ -150,7 +153,7 @@ function AddVendors() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(ownername, storename, lat, lng, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionId,ownername, storename, lat, lng, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setOwnername('')
             setStoreName('')
@@ -159,6 +162,7 @@ function AddVendors() {
             setImageLocation('')
             setDominationData([])
             setProducts([])
+            setInstitutionId('')
             setProductStatus({ value: 'active', label: "active" })
         }
     }
@@ -177,7 +181,8 @@ function AddVendors() {
                 imageurl: imageurl,
                 description: description,
                 products: products,
-                status: status.value
+                status: status.value,
+                institutionId:institutionId
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
@@ -188,6 +193,7 @@ function AddVendors() {
     const removeProd = (pid) => {
         let data = products.filter(x => x.id !== pid)
         setProducts(data)
+        setInstitutionId('')
     }
     const updateWhenisUpdate = (file) => {
         handleUploadWhenUpdate(file, setFilename, setImageLoading, setImageProgress, setMsg, errMsg, id)

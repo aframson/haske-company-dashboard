@@ -23,7 +23,7 @@ const ProductStatusOption = [
     { value: 'draft', label: 'Draft' }
 ]
 import { Fetch } from '../controllers/storeCurrency'
-import { fetchVendors } from '../controllers/vendors'
+import { fetchVendors, fetchVendorsByInstitution } from '../controllers/vendors'
 import { fetch } from '../controllers/institution'
 
 
@@ -62,7 +62,7 @@ function AddProducts() {
     const [keywordData, setKeywordData] = useState([])
     const [id, setId] = useState()
     const [showUpdate, setShowUpdate] = useState(false)
-    const [institutionIds,setInstitutionIds] = useState('')
+    const [institutionIds, setInstitutionIds] = useState('')
 
 
     const [imageurl, setImageUrl] = useState([])
@@ -121,9 +121,9 @@ function AddProducts() {
 
 
 
-    useEffect(() => {
-        fetchVendors(setGetProducts, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
-    }, [setGetProducts, setLoading, errMsg, setIsProduct, setLoading2])
+    // useEffect(() => {
+    //     fetchVendorsByInstitution(setGetProducts, institutionIds, setLoading, errMsg, setIsProduct, setLoading2, type)
+    // }, [setGetProducts, setLoading, errMsg, setIsProduct, setLoading2])
 
 
     useEffect(() => {
@@ -212,7 +212,7 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(institutionIds,title, description, products,products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionIds, title, description, products, products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setProducts([])
             setProducts2([])
             setGetProducts2([])
@@ -274,9 +274,9 @@ function AddProducts() {
                 },
                 options: optionData,
                 keywords: keywordData,
-                vendor:products,
-                institution:products2,
-                institutionIds:institutionIds
+                vendor: products,
+                institution: products2,
+                institutionIds: institutionIds
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
@@ -344,6 +344,12 @@ function AddProducts() {
         console.log('after select', data)
     }
 
+    const fetchProducts = () => {
+        console.log('starting...')
+        fetchVendorsByInstitution(setGetProducts, institutionIds, setLoading, errMsg, setIsProduct, setLoading2, type)
+    }
+
+
 
     const removeProd = (pid) => {
         let data = products.filter(x => x.id !== pid)
@@ -354,6 +360,7 @@ function AddProducts() {
     const removeProd2 = (pid) => {
         let data = products2.filter(x => x.id !== pid)
         setProducts2(data)
+        setInstitutionIds('')
     }
 
 
@@ -408,26 +415,29 @@ function AddProducts() {
                                 <div className={styles.sub}>
                                     Search or browse to add Vendor.
                                 </div>
-                                <Select
-                                    placeholder={"Search or select Institution"}
-                                    options={getProducts2 && getProducts2.map((item, i) => {
-                                        return {
-                                            id: item.id,
-                                            label: item.name,
-                                            value: { institutionId: item.id },
-                                            image: item.image
-                                        }
+                                {products2 && products2.length > 0 ? null :
+                                    <Select
+                                        placeholder={"Search or select Institution"}
+                                        options={getProducts2 && getProducts2.map((item, i) => {
+                                            return {
+                                                id: item.id,
+                                                label: item.name,
+                                                value: { institutionId: item.id },
+                                                image: item.image
+                                            }
 
-                                    })}
-                                    formatOptionLabel={opt => (
-                                        <div className={styles.optionlistbox}>
-                                            <div className={styles.optionimagebox}>
-                                                <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                        })}
+                                        formatOptionLabel={opt => (
+                                            <div className={styles.optionlistbox}>
+                                                <div className={styles.optionimagebox}>
+                                                    <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                                </div>
+                                                <div className={styles.optionlistname} >{opt.label}</div>
                                             </div>
-                                            <div className={styles.optionlistname} >{opt.label}</div>
-                                        </div>
-                                    )}
-                                    onChange={(value) => handleProductChange2(value)} />
+                                        )}
+                                        onChange={(value) => handleProductChange2(value)} />
+                                }
+
                             </div>
 
 
@@ -455,28 +465,43 @@ function AddProducts() {
                                 <div className={styles.sub}>
                                     Search or browse to add Vendor.
                                 </div>
-                                {products.length > 0 ? null :
-                                    <Select
-                                        placeholder={"Search or select Vendor"}
-                                        options={getProducts && getProducts.map((item, i) => {
-                                            return {
-                                                id: item.id,
-                                                label: item.storename,
-                                                value: { vendorId: item.id },
-                                                image: item.image
-                                            }
 
-                                        })}
-                                        formatOptionLabel={opt => (
-                                            <div className={styles.optionlistbox}>
-                                                <div className={styles.optionimagebox}>
-                                                    <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
-                                                </div>
-                                                <div className={styles.optionlistname} >{opt.label}</div>
-                                            </div>
-                                        )}
-                                        onChange={(value) => handleProductChange(value)} />
-                                }
+                                {institutionIds.length > 0 ?
+                                    <button onClick={() => fetchProducts()} className={styles.addop}>Activate Vendors</button>
+                                    : null}
+
+                                <br />
+                                <br />
+
+                                {getProducts && getProducts.length > 0 ? (
+                                    <>
+                                        {products.length > 0 ? null :
+                                            <Select
+                                                placeholder={"Search or select Vendor"}
+                                                options={getProducts && getProducts.map((item, i) => {
+                                                    return {
+                                                        id: item.id,
+                                                        label: item.storename,
+                                                        value: { vendorId: item.id },
+                                                        image: item.image
+                                                    }
+
+                                                })}
+                                                formatOptionLabel={opt => (
+                                                    <div className={styles.optionlistbox}>
+                                                        <div className={styles.optionimagebox}>
+                                                            <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                                        </div>
+                                                        <div className={styles.optionlistname} >{opt.label}</div>
+                                                    </div>
+                                                )}
+                                                onChange={(value) => handleProductChange(value)} />
+                                        }
+
+                                    </>
+
+                                ) : null}
+
                             </div>
                             {products && products.map((item, i) => (
                                 <div key={i} className={styles.optionlistbox}>
@@ -495,7 +520,7 @@ function AddProducts() {
 
                         <NicheCard id={styles.pro} >
                             <div className={styles.inpbox}>
-                                <div className={styles.label}>Title</div>
+                                <div className={styles.label}>Name</div>
                                 <input defaultValue={title} onChange={(e) => setTitle(e.target.value)} type={"text"} placeholder={"title"} className={styles.inp} />
                             </div>
 

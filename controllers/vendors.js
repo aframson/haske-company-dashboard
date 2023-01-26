@@ -20,7 +20,7 @@ export const chooseImage = (file, setImageUrl, setFilename, setImageLocation) =>
 }
 
 
-const addCollection = async (ownername,storename,lat,lng, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
+const addCollection = async (institutionId,ownername,storename,lat,lng, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
     setLoading(true)
     try {
         const docRef = await addDoc(collection(db, TableName), {
@@ -32,6 +32,7 @@ const addCollection = async (ownername,storename,lat,lng, description, filename,
             institution:products,
             description,
             status,
+            institutionId
         });
         setMsg("Logo Added sucessfully")
         setProgress(0)
@@ -88,7 +89,7 @@ export const handleUploadWhenUpdate = async (file, setFilename, setLoading, setP
 
 }
 
-export const handleUpload = async (ownername,storename,lat,lng,description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = async (institutionId,ownername,storename,lat,lng,description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     // get file name from file
     setLoading(true)
     const storage = getStorage();
@@ -118,7 +119,7 @@ export const handleUpload = async (ownername,storename,lat,lng,description, file
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
-            addCollection(ownername,storename,lat,lng, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
+            addCollection(institutionId,ownername,storename,lat,lng, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
         });
         setLoading(false)
     });
@@ -220,6 +221,44 @@ export const delData = async (id, filename, errMsg, setMsg, setLoading, setColle
     }
 
 }
+
+
+
+
+export async function fetchVendorsByInstitution(setProductData, institutions, setLoading, errMsg, setIsProduct, setLoad, type) {
+    setLoading(true)
+    setLoad(true)
+    console.log('inst ids :',institutions)
+    try {
+
+        const q = query(collection(db, TableName), where('institutionId', 'in',[institutions]));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const mainData = [];
+            querySnapshot.forEach((doc) => {
+                mainData.push({ id: doc.id, ...doc.data() })
+                console.log('new products fetch:', mainData)
+            });
+            if (mainData.length > 0) {
+                setProductData(mainData)
+                setLoading(false)
+                setLoad(false)
+                setIsProduct(true)
+            } else {
+                setProductData(mainData)
+                setLoading(false)
+                setLoad(false)
+                setIsProduct(false)
+                console.log('no data', mainData)
+            }
+        });
+    } catch (error) {
+        errMsg(error)
+        setLoading(false)
+    }
+
+
+}
+
 
 
 export async function fetchVendors(setCollection, setLoading, setAdd, errMsg, setIsProduct, setLoad, type) {

@@ -227,8 +227,6 @@ function AddProducts() {
         setProducts2(data)
         let data2 = institutionId.filter(x => x !== pid)
         setInstitutionId(data2)
-
-
     }
 
 
