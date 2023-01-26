@@ -129,6 +129,7 @@ function AddProducts() {
             // products
             setProducts(editData.products)
             setProducts2(editData.institution)
+            setInstitutionId(editData.setInstitutionId)
 
         }
 
@@ -155,7 +156,7 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description, filename, status.value, products, products2, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionId,title, description, filename, status.value, products, products2, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setTitle('')
             setFilename('')
@@ -183,7 +184,8 @@ function AddProducts() {
                 description: description,
                 products: products,
                 status: status.value,
-                institution: products2
+                institution: products2,
+                institutionId:institutionId
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
