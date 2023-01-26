@@ -20,7 +20,7 @@ export const chooseImage = (file, setImageUrl, setFilename, setImageLocation) =>
 }
 
 
-const addCollection = async (title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
+const addCollection = async (title, description, filename, status, products,products2, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
     setLoading(true)
     try {
         const docRef = await addDoc(collection(db, TableName), {
@@ -29,7 +29,8 @@ const addCollection = async (title, description, filename, status, products, dow
             title,
             description,
             status,
-            products
+            products,
+            institution:products2
         });
         setMsg("Logo Added sucessfully")
         setProgress(0)
@@ -86,7 +87,7 @@ export const handleUploadWhenUpdate = async (file, setFilename, setLoading, setP
 
 }
 
-export const handleUpload = async (title, description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = async (title, description, filename, status, products,products2, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     // get file name from file
     setLoading(true)
     const storage = getStorage();
@@ -116,7 +117,7 @@ export const handleUpload = async (title, description, filename, status, product
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
-            addCollection(title, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
+            addCollection(title, description, uniquename, status, products,products2, downloadURL, setMsg, errMsg, setLoading, setProgress);
         });
         setLoading(false)
     });

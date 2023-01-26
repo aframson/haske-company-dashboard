@@ -62,6 +62,7 @@ function AddProducts() {
     const [keywordData, setKeywordData] = useState([])
     const [id, setId] = useState()
     const [showUpdate, setShowUpdate] = useState(false)
+    const [institutionIds,setInstitutionIds] = useState('')
 
 
     const [imageurl, setImageUrl] = useState([])
@@ -164,6 +165,7 @@ function AddProducts() {
             setProductStatus({ value: editData.status, label: editData.status })
             setProducts(editData.vendor)
             setProducts2(editData.institution)
+            setInstitutionIds(editData.institutionIds)
 
         }
 
@@ -200,8 +202,8 @@ function AddProducts() {
     const AddProduct = () => {
         if (
             imageLocation === '' ||
-            products.length < 0 ||
-            products2.length < 0 ||
+            products.length <= 0 ||
+            products2.length <= 0 ||
             title === '' ||
             description === '' ||
             pricing === 0 ||
@@ -210,7 +212,7 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description, products,products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionIds,title, description, products,products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status.value, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setProducts([])
             setProducts2([])
             setGetProducts2([])
@@ -273,7 +275,8 @@ function AddProducts() {
                 options: optionData,
                 keywords: keywordData,
                 vendor:products,
-                institution:products2
+                institution:products2,
+                institutionIds:institutionIds
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
@@ -337,6 +340,7 @@ function AddProducts() {
 
     const handleProductChange2 = (data) => {
         setProducts2(prev => [...prev, data])
+        setInstitutionIds(data.id)
         console.log('after select', data)
     }
 

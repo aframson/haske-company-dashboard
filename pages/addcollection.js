@@ -6,21 +6,18 @@ import NicheCard from '../components/NicheCard';
 import { FileUploader } from "react-drag-drop-files";
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 import { MdDragIndicator, MdDelete } from 'react-icons/md'
-import { BiCheckboxSquare, BiCheckbox } from 'react-icons/bi'
-import { chooseImage, handleUpload, Update, delImageData, handleUploadWhenUpdate ,fetchCollectionById} from '../controllers/collection'
+import { chooseImage, handleUpload, Update, delImageData, handleUploadWhenUpdate, fetchCollectionById } from '../controllers/collection'
 import { useToasts } from 'react-toast-notifications'
 import Image from 'next/image';
 import dynamic from 'next/dynamic'
 import ReactLoading from 'react-loading';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select'
-import countryList from 'react-select-country-list'
-import CurrencyInput from 'react-currency-input-field';
 const RichText = dynamic(() => import('../components/RichText'), { ssr: false })
 import { State } from '../StateManagement';
-import { fetchProducts } from '../controllers/products'
-
-
+// import { fetchProducts } from '../controllers/products'
+import { fetch } from '../controllers/institution'
+import { fetchProductsByInstitution } from '../controllers/products'
 const type = 'active'
 
 
@@ -36,13 +33,13 @@ function AddProducts() {
 
     const { editData, setEditData } = useContext(State)
 
-    
 
 
 
 
-    const [imageLoading,setImageLoading] = useState(false)
-    const [imageProgress,setImageProgress] = useState(0)
+
+    const [imageLoading, setImageLoading] = useState(false)
+    const [imageProgress, setImageProgress] = useState(0)
     const [isUpdate, setIspdate] = useState(false)
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -60,7 +57,16 @@ function AddProducts() {
     const [add, setAdd] = useState(false)
     const [error, errMsg] = useState('')
     const [isProduct, setIsProduct] = useState(false)
-    const [showUpdate,setShowUpdate] = useState(false)
+    const [showUpdate, setShowUpdate] = useState(false)
+    const [institutionId, setInstitutionId] = useState('')
+
+
+    const [products2, setProducts2] = useState([])
+    const [getProducts2, setGetProducts2] = useState([])
+
+
+
+
 
 
     const { addToast } = useToasts()
@@ -75,6 +81,8 @@ function AddProducts() {
     }
 
 
+
+
     useEffect(() => {
         if (JSON.stringify(editData) === '{}' || editData === undefined) {
 
@@ -83,6 +91,7 @@ function AddProducts() {
                 editData.title === title &&
                 editData.description === description &&
                 editData.products === products &&
+                editData.institution === products2 &&
                 editData.status === status.value
             ) {
                 setShowUpdate(false);
@@ -91,7 +100,7 @@ function AddProducts() {
                 setShowUpdate(true);
             }
         }
-    }, [title, description, status, products, editData]);
+    }, [title, description, status, products, products2, editData]);
 
 
 
@@ -113,12 +122,14 @@ function AddProducts() {
             setDescription(editData && editData.description)
             // media
             setFilename(editData.filename)
-            fetchCollectionById(editData.id,setImageUrl,setLoading,errMsg)
+            fetchCollectionById(editData.id, setImageUrl, setLoading, errMsg)
             setImageLocation(editData.image)
             // others
             setProductStatus({ value: editData.status, label: editData.status })
             // products
             setProducts(editData.products)
+            setProducts2(editData.institution)
+
         }
 
     }, [editData])
@@ -144,7 +155,7 @@ function AddProducts() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(title, description, filename, status.value, products, products2, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setTitle('')
             setFilename('')
@@ -152,6 +163,7 @@ function AddProducts() {
             setImageLocation('')
             setProducts([])
             setProductStatus({ value: 'active', label: "active" })
+            setProducts2([])
         }
     }
 
@@ -159,19 +171,21 @@ function AddProducts() {
     const updateProduct = () => {
         if (
             imageurl === '' ||
+            products2.length <= 0 ||
             title === '' ||
             description === '') {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
             let data = {
-                filename:filename,
+                filename: filename,
                 title: title,
                 imageurl: imageurl,
-                description:description,
-                products:products,
-                status:status.value
+                description: description,
+                products: products,
+                status: status.value,
+                institution: products2
             }
-           Update(id, data, setLoading, setMsg, errMsg, setProgress)
+            Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
 
     }
@@ -182,16 +196,41 @@ function AddProducts() {
         setProducts(data)
     }
     const updateWhenisUpdate = (file) => {
-        handleUploadWhenUpdate(file,setFilename,setImageLoading, setImageProgress, setMsg, errMsg, id)
+        handleUploadWhenUpdate(file, setFilename, setImageLoading, setImageProgress, setMsg, errMsg, id)
     }
 
-    const RemoveImage = (filename)=>{
-        delImageData(id,filename, errMsg, setMsg, setLoading)
+    const RemoveImage = (filename) => {
+        delImageData(id, filename, errMsg, setMsg, setLoading)
     }
+
+
+    const fetchProducts = () => {
+        console.log('starting...')
+        fetchProductsByInstitution(setGetProducts, institutionId, setLoading, errMsg, setIsProduct, setLoading2, type)
+    }
+
 
     useEffect(() => {
-        fetchProducts(setGetProducts, setLoading, errMsg, setIsProduct, setLoading2, type)
-    }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
+        fetch(setGetProducts2, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
+    }, [setGetProducts2, setLoading, errMsg, setIsProduct, setLoading2])
+
+
+
+    const handleProductChange2 = (data) => {
+        setProducts2(prev => [...prev, data])
+        // console.log('after select', products2)
+        setInstitutionId(prev => [...prev, data.id])
+    }
+
+    const removeProd2 = (pid) => {
+        let data = products2.filter(x => x.id !== pid)
+        setProducts2(data)
+        let data2 = institutionId.filter(x => x !== pid)
+        setInstitutionId(data2)
+
+
+    }
+
 
 
 
@@ -233,6 +272,49 @@ function AddProducts() {
                 </div>
                 <div className={styles.productBox}>
                     <div className={styles.side}>
+                        <NicheCard id={styles.pro}>
+                            <div className={styles.inpbox}>
+                                <div className={styles.title}>What institution does this product belong</div>
+                                <div className={styles.sub}>
+                                    Search or browse to add Vendor.
+                                </div>
+                                <Select
+                                    placeholder={"Search or select Institution"}
+                                    options={getProducts2 && getProducts2.map((item, i) => {
+                                        return {
+                                            id: item.id,
+                                            label: item.name,
+                                            value: { institutionId: item.id },
+                                            image: item.image
+                                        }
+
+                                    })}
+                                    formatOptionLabel={opt => (
+                                        <div className={styles.optionlistbox}>
+                                            <div className={styles.optionimagebox}>
+                                                <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                            </div>
+                                            <div className={styles.optionlistname} >{opt.label}</div>
+                                        </div>
+                                    )}
+                                    onChange={(value) => handleProductChange2(value)} />
+                            </div>
+
+
+                            {products2 && products2.map((item, i) => (
+                                <div key={i} className={styles.optionlistbox}>
+                                    <MdDragIndicator style={{ marginTop: 0 }} size={30} color={'gray'} />
+                                    <div className={styles.optionimagebox}>
+                                        <Image blurDataURL={item.image} src={item.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                    </div>
+                                    <div className={styles.optionlistname} >{item.label}</div>
+                                    <div onClick={() => removeProd2(item.id)} className={styles.optionlistname} >
+                                        <MdDelete style={{ marginTop: 0 }} size={30} color={'red'} />
+                                    </div>
+                                </div>
+                            ))}
+                        </NicheCard>
+
                         <NicheCard id={styles.pro} >
                             <div className={styles.inpbox}>
                                 <div className={styles.label}>Title</div>
@@ -250,26 +332,36 @@ function AddProducts() {
                                 <div className={styles.sub}>
                                     Search or browse to add products.
                                 </div>
-                                <Select
-                                    placeholder={"Search or select product"}
-                                    options={getProducts && getProducts.map((item, i) => {
-                                        return {
-                                            id: item.id,
-                                            label: item.info.title,
-                                            value: { prductid: item.id },
-                                            image: item.images[0]
-                                        }
 
-                                    })}
-                                    formatOptionLabel={opt => (
-                                        <div className={styles.optionlistbox}>
-                                            <div className={styles.optionimagebox}>
-                                                <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                {institutionId.length > 0 ?
+                                    <button onClick={() => fetchProducts()} className={styles.addop}>Activate Products</button>
+                                    : null}
+
+                                <br />
+                                <br />
+
+                                {getProducts && getProducts.length > 0 ? (
+                                    <Select
+                                        placeholder={"Search or select product"}
+                                        options={getProducts && getProducts.map((item, i) => {
+                                            return {
+                                                id: item.id,
+                                                label: item.info.title,
+                                                value: { prductid: item.id },
+                                                image: item.images[0]
+                                            }
+
+                                        })}
+                                        formatOptionLabel={opt => (
+                                            <div className={styles.optionlistbox}>
+                                                <div className={styles.optionimagebox}>
+                                                    <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                                </div>
+                                                <div className={styles.optionlistname} >{opt.label}</div>
                                             </div>
-                                            <div className={styles.optionlistname} >{opt.label}</div>
-                                        </div>
-                                    )}
-                                    onChange={(value) => handleProductChange(value)} />
+                                        )}
+                                        onChange={(value) => handleProductChange(value)} />
+                                ) : null}
                             </div>
                             {products && products.map((item, i) => (
                                 <div key={i} className={styles.optionlistbox}>
@@ -300,13 +392,13 @@ function AddProducts() {
                         </NicheCard>
                         {isUpdate ?
                             <NicheCard id={styles.pro}>
-                                 {imageLoading ? (
-                                    <center style={{padding:20}}>
-                                         <span>{Math.round(imageProgress)}%</span>
+                                {imageLoading ? (
+                                    <center style={{ padding: 20 }}>
+                                        <span>{Math.round(imageProgress)}%</span>
                                         <ReactLoading type='spin' color={'black'} height={30} width={30} />
                                     </center>
                                 ) : null}
-                              
+
                                 <div style={{ width: imageProgress + "%" }} className={styles.imgprog}></div>
                                 {imageurl ? (
                                     <>

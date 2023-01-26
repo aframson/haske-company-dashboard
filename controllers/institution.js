@@ -259,6 +259,8 @@ export async function fetch(setGiftCard, setLoading, setAdd, errMsg, setIsProduc
 
 }
 
+
+
 export async function fetchGiftCardById(id, setImageUrl, setLoading, errMsg) {
     setLoading(true)
     try {

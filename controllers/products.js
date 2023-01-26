@@ -1,7 +1,7 @@
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { doc, updateDoc, deleteDoc, addDoc, collection, query, where, getDocs, onSnapshot } from "firebase/firestore";
 import db from "../firebase";
-
+import {fetch} from './collection'
 const TableName = "Products"
 
 
@@ -11,7 +11,7 @@ const randomString = () => {
 
 
 const random = () => {
-    return Math.random().toString(36).substring(2, 15) 
+    return Math.random().toString(36).substring(2, 15)
 }
 
 
@@ -51,7 +51,7 @@ export const chooseImageWhenUpdated = (file, imageurl, setLoading, setProgress, 
             console.log('file', mainfile.name)
             console.log('loop');
             const storage = getStorage();
-            const sotrageRef = ref(storage,uniquename);
+            const sotrageRef = ref(storage, uniquename);
             const uploadTask = uploadBytesResumable(sotrageRef, mainfile);
             promises.push(uploadTask)
             uploadTask.on("state_changed", (snapshot) => {
@@ -142,7 +142,7 @@ export async function UpdateImage(id, image, setLoading, setMsg, errMsg, setProg
 }
 
 
-export const handleUpload = (title, description,products,products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = (institutionIds,title, description, products, products2, pricing, comparePrice, cpp, sku, barCode, numberAvailable, status, weight, customsInfo, country, hs, optionData, keywordData, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     setLoading(true)
     const promises = []
     const images = [];
@@ -167,9 +167,10 @@ export const handleUpload = (title, description,products,products2, pricing, com
                     console.log('Now its ready ++++')
                     console.log("new images ===", images);
                     const exportData = {
-                        vendor:products,
-                        institution:products2,
-                        discount:0,
+                        vendor: products,
+                        institution: products2,
+                        institutionIds:institutionIds,
+                        discount: 0,
                         info: {
                             title: title,
                             description: description
@@ -269,6 +270,43 @@ export const delData = async (id, images, errMsg, setMsg, setLoading, setProduct
         errMsg('Could not Delete Logo')
         setLoading(false)
     }
+
+}
+
+
+
+
+export async function fetchProductsByInstitution(setProductData, institutions, setLoading, errMsg, setIsProduct, setLoad, type) {
+    setLoading(true)
+    setLoad(true)
+    console.log('inst ids :',institutions)
+    try {
+
+        const q = query(collection(db, TableName), where('institutionIds', 'in',institutions));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const mainData = [];
+            querySnapshot.forEach((doc) => {
+                mainData.push({ id: doc.id, ...doc.data() })
+                console.log('new products fetch:', mainData)
+            });
+            if (mainData.length > 0) {
+                setProductData(mainData)
+                setLoading(false)
+                setLoad(false)
+                setIsProduct(true)
+            } else {
+                setProductData(mainData)
+                setLoading(false)
+                setLoad(false)
+                setIsProduct(false)
+                console.log('no data', mainData)
+            }
+        });
+    } catch (error) {
+        errMsg(error)
+        setLoading(false)
+    }
+
 
 }
 
