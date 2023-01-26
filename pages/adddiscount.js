@@ -19,7 +19,7 @@ import CurrencyInput from 'react-currency-input-field';
 const RichText = dynamic(() => import('../components/RichText'), { ssr: false })
 import { State } from '../StateManagement';
 import { fetchDiscountedProducts } from '../controllers/products'
-
+import { fetch } from '../controllers/institution';
 
 const type = 'active'
 
@@ -64,6 +64,13 @@ function AddDiscount() {
     const [oldproducts, setOldProducts] = useState(0)
     const [showUpdate, setShowUpdate] = useState(false)
 
+    const [institutionIds, setInstitutionIds] = useState('')
+
+
+
+    const [products2, setProducts2] = useState([])
+    const [getProducts2, setGetProducts2] = useState([])
+
 
     const { addToast } = useToasts()
 
@@ -88,6 +95,7 @@ function AddDiscount() {
                 editData.title === title &&
                 editData.description === description &&
                 editData.products === products &&
+                editData.institution === products2 &&
                 editData.status === status.value
             ) {
                 setShowUpdate(false);
@@ -96,7 +104,7 @@ function AddDiscount() {
                 setShowUpdate(true);
             }
         }
-    }, [title, description, status, products, editData]);
+    }, [title, description, status, products,products2, editData]);
 
 
 
@@ -122,6 +130,9 @@ function AddDiscount() {
             // products
             setProducts(editData.products)
             setOldProducts(editData.products.length)
+            setProducts2(editData.institution)
+            setInstitutionIds(editData.institutionIds)
+
         }
 
     }, [editData])
@@ -149,7 +160,7 @@ function AddDiscount() {
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(title, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionIds,products2, title, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setTitle('')
             setFilename('')
@@ -157,6 +168,8 @@ function AddDiscount() {
             setImageLocation('')
             setProducts([])
             setProductStatus({ value: 'active', label: "active" })
+            setProducts2([])
+
         }
     }
 
@@ -176,17 +189,36 @@ function AddDiscount() {
                 imageurl: imageurl,
                 description: description,
                 products: products,
-                status: status.value
+                status: status.value,
+                institutionIds: institutionIds
             }
             updateaffectAllProduct(id, data, oldproducts, setLoading, setMsg, errMsg, setProgress)
         }
 
     }
 
+    const handleProductChange2 = (data) => {
+        setProducts2(prev => [...prev, data])
+        setInstitutionIds(data.id)
+        console.log('after select', data)
+    }
 
     const removeProd = (pid) => {
         deleteDiscount(pid, products, setProducts, setLoading, setMsg, errMsg)
     }
+
+    const fetchProducts = () => {
+        console.log('starting...')
+        fetchDiscountedProducts(setGetProducts, institutionIds, setLoading, errMsg, setIsProduct, setLoading2)
+    }
+
+
+    const removeProd2 = (pid) => {
+        let data = products2.filter(x => x.id !== pid)
+        setProducts2(data)
+        setInstitutionIds('')
+    }
+
     const updateWhenisUpdate = (file) => {
         handleUploadWhenUpdate(file, setFilename, setImageLoading, setImageProgress, setMsg, errMsg, id)
     }
@@ -195,10 +227,14 @@ function AddDiscount() {
         delImageData(id, filename, errMsg, setMsg, setLoading)
     }
 
-    useEffect(() => {
-        fetchDiscountedProducts(setGetProducts, setLoading, errMsg, setIsProduct, setLoading2)
-    }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
+    // useEffect(() => {
+    //     fetchDiscountedProducts(setGetProducts, setLoading, errMsg, setIsProduct, setLoading2)
+    // }, [setProducts, setLoading, errMsg, setIsProduct, setLoading2])
 
+
+    useEffect(() => {
+        fetch(setGetProducts2, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
+    }, [setGetProducts2, setLoading, errMsg, setIsProduct, setLoading2])
 
 
 
@@ -250,6 +286,60 @@ function AddDiscount() {
                                 <RichText text={description && description} setText={setDescription} placeholder={'Add a description'} width='99%' />
                             </div>
                         </NicheCard>
+
+                        <NicheCard id={styles.pro}>
+                            <div className={styles.inpbox}>
+                                <div className={styles.title}>What institution does this product belong</div>
+                                <div className={styles.sub}>
+                                    Search or browse to add Vendor.
+                                </div>
+                                {products2 && products2.length > 0 ? null :
+                                    <Select
+                                        placeholder={"Search or select Institution"}
+                                        options={getProducts2 && getProducts2.map((item, i) => {
+                                            return {
+                                                id: item.id,
+                                                label: item.name,
+                                                value: { institutionId: item.id },
+                                                image: item.image
+                                            }
+
+                                        })}
+                                        formatOptionLabel={opt => (
+                                            <div className={styles.optionlistbox}>
+                                                <div className={styles.optionimagebox}>
+                                                    <Image blurDataURL={opt.image} src={opt.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                                </div>
+                                                <div className={styles.optionlistname} >{opt.label}</div>
+                                            </div>
+                                        )}
+                                        onChange={(value) => handleProductChange2(value)} />
+                                }
+
+                            </div>
+
+
+                            {products2 && products2.map((item, i) => (
+                                <div key={i} className={styles.optionlistbox}>
+                                    <MdDragIndicator style={{ marginTop: 0 }} size={30} color={'gray'} />
+                                    <div className={styles.optionimagebox}>
+                                        <Image blurDataURL={item.image} src={item.image} alt="option-image" height={30} width={30} className={styles.optionimages} />
+                                    </div>
+                                    <div className={styles.optionlistname} >{item.label}</div>
+                                    <div onClick={() => removeProd2(item.id)} className={styles.optionlistname} >
+                                        <MdDelete style={{ marginTop: 0 }} size={30} color={'red'} />
+                                    </div>
+                                </div>
+                            ))}
+                        </NicheCard>
+                        <br />
+
+                        {institutionIds !== '' ?
+                            <button onClick={() => fetchProducts()} className={styles.addop}>Activate Products</button>
+                            : null}
+                        <br />
+
+                        {getProducts && getProducts.length > 0 ? (
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
                                 <div className={styles.title}>Set discount to Products</div>
@@ -303,6 +393,7 @@ function AddDiscount() {
                                 </div>
                             ))}
                         </NicheCard>
+                        ):null}
                     </div>
                     <div className={styles.side}>
                         <NicheCard id={styles.pro}>

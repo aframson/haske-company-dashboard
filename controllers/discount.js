@@ -20,7 +20,7 @@ export const chooseImage = (file, setImageUrl, setFilename, setImageLocation) =>
 }
 
 
-const addDiscounts = async (title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
+const addDiscounts = async (institutionIds,products2,title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
     setLoading(true)
     try {
         const docRef = await addDoc(collection(db, TableName), {
@@ -29,7 +29,9 @@ const addDiscounts = async (title, description, filename, status, products, down
             title,
             description,
             status,
-            products
+            products,
+            institutionIds,
+            institution:products2
         });
         setMsg("Logo Added sucessfully")
         setProgress(0)
@@ -86,7 +88,7 @@ export const handleUploadWhenUpdate = async (file, setFilename, setLoading, setP
 
 }
 
-export const handleUpload = async (title, description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = async (institutionIds,products2,title, description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     // get file name from file
     setLoading(true)
     const storage = getStorage();
@@ -116,7 +118,7 @@ export const handleUpload = async (title, description, filename, status, product
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
-            affectAllProduct(title, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
+            affectAllProduct(institutionIds,products2,title, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
         });
         setLoading(false)
     });
@@ -124,7 +126,7 @@ export const handleUpload = async (title, description, filename, status, product
 }
 
 
-async function affectAllProduct(title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) {
+async function affectAllProduct(institutionIds,products2,title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) {
     for (let x = 0; x < products.length; x++) {
         const discount = products[x].discount;
         const productId = products[x].id
@@ -140,7 +142,7 @@ async function affectAllProduct(title, description, filename, status, products, 
             setProgress(0)
         }
     }
-    addDiscounts(title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
+    addDiscounts(institutionIds,products2,title, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
 }
 
 

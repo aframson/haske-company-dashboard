@@ -344,11 +344,14 @@ export async function fetchProducts(setProductData, setLoading, errMsg, setIsPro
 }
 
 
-export async function fetchDiscountedProducts(setProductData, setLoading, errMsg, setIsProduct, setLoad) {
+export async function fetchDiscountedProducts(setProductData,institutions, setLoading, errMsg, setIsProduct, setLoad) {
     setLoading(true)
     setLoad(true)
+    
+    console.log('inst ids :',institutions)
+
     try {
-        const q = query(collection(db, TableName), where("discount", "<", 1));
+        const q = query(collection(db, TableName), where('institutionIds','in',[institutions]));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const mainData = [];
             querySnapshot.forEach((doc) => {
@@ -364,6 +367,8 @@ export async function fetchDiscountedProducts(setProductData, setLoading, errMsg
                 setLoading(false)
                 setLoad(false)
                 setIsProduct(false)
+                setProductData(mainData)
+
             }
         });
     } catch (error) {

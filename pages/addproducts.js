@@ -121,11 +121,7 @@ function AddProducts() {
 
 
 
-    // useEffect(() => {
-    //     fetchVendorsByInstitution(setGetProducts, institutionIds, setLoading, errMsg, setIsProduct, setLoading2, type)
-    // }, [setGetProducts, setLoading, errMsg, setIsProduct, setLoading2])
-
-
+   
     useEffect(() => {
         fetch(setGetProducts2, setLoading, setAdd, errMsg, setIsProduct, setLoading2, type)
     }, [setGetProducts2, setLoading, errMsg, setIsProduct, setLoading2])
@@ -497,11 +493,8 @@ function AddProducts() {
                                                 )}
                                                 onChange={(value) => handleProductChange(value)} />
                                         }
-
                                     </>
-
                                 ) : null}
-
                             </div>
                             {products && products.map((item, i) => (
                                 <div key={i} className={styles.optionlistbox}>
@@ -516,7 +509,6 @@ function AddProducts() {
                                 </div>
                             ))}
                         </NicheCard>
-
 
                         <NicheCard id={styles.pro} >
                             <div className={styles.inpbox}>
