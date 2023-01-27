@@ -170,12 +170,7 @@ function AddVendors() {
 
 
     const updateProduct = () => {
-        if (
-            imageurl === '' ||
-            title === '' ||
-            description === '') {
-            addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
-        } else {
+      
             let data = {
                 filename: filename,
                 title: title,
@@ -184,10 +179,10 @@ function AddVendors() {
                 products: products,
                 status: status.value,
                 institutionId:institutionId,
-                geolocation:[{lat:lat,lng:lng}]
+                geolocation:dominationsData
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
-        }
+    
 
     }
 
