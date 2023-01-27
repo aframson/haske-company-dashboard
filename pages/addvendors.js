@@ -88,7 +88,8 @@ function AddVendors() {
                 editData.storename === storename &&
                 editData.description === description &&
                 editData.institution === products &&
-                editData.status === status.value
+                editData.status === status.value &&
+                editData.geolocation  === dominationsData
             ) {
                 setShowUpdate(false);
             }
@@ -96,7 +97,7 @@ function AddVendors() {
                 setShowUpdate(true);
             }
         }
-    }, [ownername, storename, description, status, products, editData]);
+    }, [ownername, storename, description, status, products, editData,dominationsData]);
 
 
 
@@ -182,7 +183,8 @@ function AddVendors() {
                 description: description,
                 products: products,
                 status: status.value,
-                institutionId:institutionId
+                institutionId:institutionId,
+                geolocation:[{lat:lat,lng:lng}]
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
         }
@@ -322,7 +324,7 @@ function AddVendors() {
                     <div className={styles.side}>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>Collection availability</div>
+                                <div className={styles.title}>Vendor availability</div>
                                 <Select options={ProductStatusOption} value={status} onChange={(value) => setProductStatus(value)} />
                             </div>
                             <div className={styles.inpbox}>

@@ -130,7 +130,6 @@ function AddProducts() {
             setProducts(editData.products)
             setProducts2(editData.institution)
             setInstitutionId([editData.institutionId])
-
         }
 
     }, [editData])
