@@ -176,7 +176,7 @@ function AddVendors() {
                 title: title,
                 imageurl: imageurl,
                 description: description,
-                products: products,
+                institution: products,
                 status: status.value,
                 institutionId:institutionId,
                 geolocation:dominationsData
