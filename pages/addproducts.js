@@ -271,6 +271,7 @@ function AddProducts() {
                 options: optionData,
                 keywords: keywordData,
                 vendor: products,
+                vendorId:products[0].id,
                 institution: products2,
                 institutionIds: institutionIds
             }
@@ -344,6 +345,7 @@ function AddProducts() {
         console.log('starting...')
         fetchVendorsByInstitution(setGetProducts, institutionIds, setLoading, errMsg, setIsProduct, setLoading2, type)
     }
+
 
 
 

@@ -168,6 +168,7 @@ export const handleUpload = (institutionIds,title, description, products, produc
                     console.log("new images ===", images);
                     const exportData = {
                         vendor: products,
+                        vendorId:products[0].id,
                         institution: products2,
                         institutionIds:institutionIds,
                         discount: 0,
