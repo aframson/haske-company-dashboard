@@ -62,7 +62,7 @@ function Categories() {
 
     return (
         <NavigationLayout>
-            <ViewLayout title={"Collections"}>
+            <ViewLayout title={"Categories"}>
 
                 <NicheCard id={styles.prodbox}>
                     <div className={styles.toptabnavigator}>
@@ -72,7 +72,7 @@ function Categories() {
                         </div>
                         <div className={styles.items2} >
                             <Select
-                                    placeholder={"Search or select product"}
+                                    placeholder={"Search or select Categories"}
                                     // className={styles.searchinp}
                                     options={getProducts && getProducts.map((item, i) => {
                                         return {
@@ -102,7 +102,7 @@ function Categories() {
                                 <center>
                                     <ReactLoading color={'white'} height={20} width={20} />
                                 </center>
-                            ) : "Add Collection"}
+                            ) : "Add"}
                         </button>
                     </div>
                     {tabs === 'active' ? (

@@ -20,11 +20,13 @@ export const chooseImage = (file, setImageUrl, setFilename, setImageLocation) =>
 }
 
 
-const addCollection = async (institutionId,ownername,storename,lat,lng, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
+const addCollection = async (institutionId,ownername,password,email,storename,lat,lng, description, filename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress) => {
     setLoading(true)
     try {
         const docRef = await addDoc(collection(db, TableName), {
             filename,
+            password,
+            email,
             image: downloadURL,
             ownername,
             storename,
@@ -89,7 +91,7 @@ export const handleUploadWhenUpdate = async (file, setFilename, setLoading, setP
 
 }
 
-export const handleUpload = async (institutionId,ownername,storename,lat,lng,description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
+export const handleUpload = async (institutionId,ownername,password,email,storename,lat,lng,description, filename, status, products, setLoading, imageLocation, setProgress, setMsg, errMsg) => {
     // get file name from file
     setLoading(true)
     const storage = getStorage();
@@ -119,7 +121,7 @@ export const handleUpload = async (institutionId,ownername,storename,lat,lng,des
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
-            addCollection(institutionId,ownername,storename,lat,lng, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
+            addCollection(institutionId,ownername,password,email,storename,lat,lng, description, uniquename, status, products, downloadURL, setMsg, errMsg, setLoading, setProgress);
         });
         setLoading(false)
     });

@@ -82,7 +82,7 @@ export default function AllCollections({ setIsProduct, setLoad, type }) {
     <div className={styles.tablerow}>
       <div className={styles.tablecontent}>
         <div className={styles.tablehead}>
-          <div className={styles.th}>Collection</div>
+          <div className={styles.th}>Categories</div>
           <div className={styles.th}>staus</div>
           <div className={styles.th}>Products</div>
           <div className={styles.th}>edit</div>

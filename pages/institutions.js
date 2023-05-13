@@ -83,7 +83,7 @@ function Institution() {
 
     return (
         <NavigationLayout>
-            <ViewLayout title={"Institution"}>
+            <ViewLayout title={"Locality"}>
                 <NicheCard id={styles.prodbox}>
                     <div className={styles.toptabnavigator}>
                         <div className={styles.tablist}>
@@ -124,7 +124,7 @@ function Institution() {
                                 <center>
                                     <ReactLoading color={'white'} height={20} width={20} />
                                 </center>
-                            ) : "Add Institution"}
+                            ) : "Add"}
                         </button>
                     </div>
                     {tabs === 'active' ? (
@@ -195,13 +195,6 @@ function Institution() {
                     </>
                 )}
 
-
-
-                <center>
-                    <div className={styles.link}>
-                        Learn more about <Link href={"#"}>Gift Cards</Link>
-                    </div>
-                </center>
             </ViewLayout>
         </NavigationLayout>
     )

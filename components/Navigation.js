@@ -62,12 +62,12 @@ function Navigation() {
                     </SubMenu>
                     <SubMenu icon={<IoBagSharp size={ICON_SIZE} color="black" />} label="Products">
                         <MenuItem routerLink={<Link href="/products" />}> Products </MenuItem>
-                        <MenuItem routerLink={<Link href="/collections" />}> Collections </MenuItem>
+                        <MenuItem routerLink={<Link href="/collections" />}> Categories </MenuItem>
                         <MenuItem routerLink={<Link href="/giftcard" />}> Gift Cards </MenuItem>
                     </SubMenu>
                     <MenuItem routerLink={<Link href="/customers" />} icon={<FaUser size={ICON_SIZE} color="black" />} > Customers </MenuItem>
-                    <MenuItem routerLink={<Link href="/institutions" />} icon={<FaSchool size={ICON_SIZE} color="black" />} > Institutions </MenuItem>
-                    <MenuItem routerLink={<Link href="/vendors" />} icon={<RiRestaurantFill size={ICON_SIZE} color="black" />} > Vendors </MenuItem>
+                    <MenuItem routerLink={<Link href="/institutions" />} icon={<FaSchool size={ICON_SIZE} color="black" />} > Locality </MenuItem>
+                    <MenuItem routerLink={<Link href="/vendors" />} icon={<RiRestaurantFill size={ICON_SIZE} color="black" />} > Restaurant </MenuItem>
                     <MenuItem routerLink={<Link href="/notification" />} icon={<RiRestaurantFill size={ICON_SIZE} color="black" />} > Notification </MenuItem>
                     <SubMenu icon={<IoAnalyticsSharp size={ICON_SIZE} color="black" />} label="Analytics">
                         <MenuItem routerLink={<Link href="/analytics" />} > View Analytics </MenuItem>

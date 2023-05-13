@@ -30,7 +30,9 @@ function Auth() {
         {loading ? (
           <center>
             <div className={styles.imagebox}>
-              <Image src={logo} className={styles.image} placeholder="blur" alt="logo" />
+              {/* <Image src={logo} className={styles.image} placeholder="blur" alt="logo" /> */}
+              <span style={{fontSize:60,color:'white'}}> HASKE </span> 
+
               <div className={styles.loadicon}>
                 <ReactLoading color={'#33cc66'} height={60} width={60} />
               </div>
@@ -41,7 +43,8 @@ function Auth() {
           <>
             <center>
               <div className={styles.imagebox}>
-                <Image src={logo} className={styles.image} placeholder="blur" alt="logo" />
+                {/* <Image src={logo} className={styles.image} placeholder="blur" alt="logo" /> */}
+               <span style={{fontSize:60,color:'white'}}> HASKE </span>  <span style={{color:'#33cc66',fontSize:60}}>.</span>
               </div>
             </center>
 

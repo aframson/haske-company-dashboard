@@ -4,7 +4,7 @@ import NavigationLayout from '../components/NavigationLayout';
 import ViewLayout from '../components/ViewLayout';
 import NicheCard from '../components/NicheCard';
 import { FileUploader } from "react-drag-drop-files";
-const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
+const fileTypes = ["JPG", "PNG", "GIF", "JPEG","obj"];
 import { MdDragIndicator, MdDelete } from 'react-icons/md'
 import { BiCheckboxSquare, BiCheckbox } from 'react-icons/bi'
 import { chooseImage, handleUpload, Update, delImageData, chooseImageWhenUpdated, fetchProductsById } from '../controllers/products'
@@ -25,8 +25,8 @@ const ProductStatusOption = [
 import { Fetch } from '../controllers/storeCurrency'
 import { fetchVendors, fetchVendorsByInstitution } from '../controllers/vendors'
 import { fetch } from '../controllers/institution'
-
-
+import Model from 'react-3dmodelx';
+// import mesh from '../public/assets/mesh.obj'
 const type = 'active'
 
 
@@ -409,13 +409,13 @@ function AddProducts() {
                     <div className={styles.side}>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>What institution does this product belong</div>
+                                <div className={styles.title}>What Locality does this product belong</div>
                                 <div className={styles.sub}>
                                     Search or browse to add Vendor.
                                 </div>
                                 {products2 && products2.length > 0 ? null :
                                     <Select
-                                        placeholder={"Search or select Institution"}
+                                        placeholder={"Search or select Locality"}
                                         options={getProducts2 && getProducts2.map((item, i) => {
                                             return {
                                                 id: item.id,
@@ -461,11 +461,11 @@ function AddProducts() {
                             <div className={styles.inpbox}>
                                 <div className={styles.title}>Who is selling this Product</div>
                                 <div className={styles.sub}>
-                                    Search or browse to add Vendor.
+                                    Search or browse to add Restaurant.
                                 </div>
 
                                 {institutionIds.length > 0 ?
-                                    <button onClick={() => fetchProducts()} className={styles.addop}>Activate Vendors</button>
+                                    <button onClick={() => fetchProducts()} className={styles.addop}>Activate Restaurant</button>
                                     : null}
 
                                 <br />
@@ -475,7 +475,7 @@ function AddProducts() {
                                     <>
                                         {products.length > 0 ? null :
                                             <Select
-                                                placeholder={"Search or select Vendor"}
+                                                placeholder={"Search or select Restaurant"}
                                                 options={getProducts && getProducts.map((item, i) => {
                                                     return {
                                                         id: item.id,
@@ -545,6 +545,9 @@ function AddProducts() {
                                         </div>
                                     ))}
                                 </div>
+                                    {/* <NicheCard>
+                                        <Model.OBJ src={mesh} />
+                                    </NicheCard> */}
                                 {imageurl.length >= 3 ? (null) :
                                     <div className={styles.inpbox}>
                                         <div className={styles.title}>Media</div>
@@ -552,6 +555,7 @@ function AddProducts() {
                                             Maximum image to upload is 3.
                                         </div>
                                         <FileUploader multiple={true} className={styles.fileupload} handleChange={(file) => updateImageWhenisUpdate(file)} name="file" types={fileTypes} />
+                                       
                                     </div>
                                 }
                             </NicheCard>

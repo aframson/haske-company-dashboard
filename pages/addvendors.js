@@ -65,6 +65,8 @@ function AddVendors() {
     const [ownername, setOwnername] = useState('')
     const [storename, setStoreName] = useState('')
     const [institutionId,setInstitutionId] = useState('')
+    const [password,setPassword] = useState('')
+    const [email,setEmail] = useState('')
 
     const { addToast } = useToasts()
 
@@ -89,7 +91,9 @@ function AddVendors() {
                 editData.description === description &&
                 editData.institution === products &&
                 editData.status === status.value &&
-                editData.geolocation  === dominationsData
+                editData.geolocation  === dominationsData &&
+                editData.password === password &&
+                editData.email === email
             ) {
                 setShowUpdate(false);
             }
@@ -97,7 +101,7 @@ function AddVendors() {
                 setShowUpdate(true);
             }
         }
-    }, [ownername, storename, description, status, products, editData,dominationsData]);
+    }, [ownername, storename, description, status, products, editData,dominationsData,password,email]);
 
 
 
@@ -119,6 +123,8 @@ function AddVendors() {
             setStoreName(editData.storename)
             setDescription(editData && editData.description)
             setDominationData(editData.geolocation)
+            setPassword(editData.password)
+            setEmail(editData.email)
             // media
             setFilename(editData.filename)
             fetchCollectionById(editData.id, setImageUrl, setLoading, errMsg)
@@ -150,11 +156,13 @@ function AddVendors() {
             imageurl == null ||
             ownername === '' ||
             storename === '' ||
-            description === ''
+            description === ''||
+            password === '' ||
+            email === '' 
         ) {
             addToast("Basic fields such us product info, media and pricing are compulsory.", { appearance: 'warning', autoDismiss: true, })
         } else {
-            handleUpload(institutionId,ownername, storename, lat, lng, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
+            handleUpload(institutionId,ownername,password,email, storename, lat, lng, description, filename, status.value, products, setLoading, imageLocation, setProgress, setMsg, errMsg)
             setDescription('')
             setOwnername('')
             setStoreName('')
@@ -164,6 +172,8 @@ function AddVendors() {
             setDominationData([])
             setProducts([])
             setInstitutionId('')
+            setPassword('')
+            setEmail('')
             setProductStatus({ value: 'active', label: "active" })
         }
     }
@@ -179,7 +189,9 @@ function AddVendors() {
                 institution: products,
                 status: status.value,
                 institutionId:institutionId,
-                geolocation:dominationsData
+                geolocation:dominationsData,
+                password:password,
+                email:email,
             }
             Update(id, data, setLoading, setMsg, errMsg, setProgress)
     
@@ -224,7 +236,7 @@ function AddVendors() {
             <ViewLayout title={"Vendors"}>
                 <div className={styles.acceptbox}>
                     <div className={styles.navbox}>
-                        <div className={styles.unsaved}>Add Vendors  </div>
+                        <div className={styles.unsaved}>Add Restaurant  </div>
                         <div className={styles.savebox}>
                             <button id={styles.discard} onClick={() => router.back()} className={styles.actionbutt}>Discard</button>
                             {isUpdate ? (
@@ -265,6 +277,16 @@ function AddVendors() {
                             <div className={styles.inpbox}>
                                 <div className={styles.label}>Store Name</div>
                                 <input defaultValue={storename} onChange={(e) => setStoreName(e.target.value)} type={"text"} placeholder={"Store Name"} className={styles.inp} />
+                            </div>
+
+                            <div className={styles.inpbox}>
+                                <div className={styles.label}>Email</div>
+                                <input defaultValue={email} onChange={(e) => setEmail(e.target.value)} type={"text"} placeholder={"Email"} className={styles.inp} />
+                            </div>
+
+                            <div className={styles.inpbox}>
+                                <div className={styles.label}>Password</div>
+                                <input defaultValue={password} onChange={(e) => setPassword(e.target.value)} type={"text"} placeholder={"Password"} className={styles.inp} />
                             </div>
 
                             <div className={styles.inpbox}>

@@ -194,10 +194,10 @@ function AddInstitution() {
 
     return (
         <NavigationLayout>
-            <ViewLayout title={"GiftCard"}>
+            <ViewLayout title={"Locality"}>
                 <div className={styles.acceptbox}>
                     <div className={styles.navbox}>
-                        <div className={styles.unsaved}>Create Institution  </div>
+                        <div className={styles.unsaved}>Create Locality  </div>
                         <div className={styles.savebox}>
                             <button id={styles.discard} onClick={() => router.back()} className={styles.actionbutt}>Discard</button>
                             {isUpdate ? (
@@ -232,12 +232,12 @@ function AddInstitution() {
                         <NicheCard id={styles.pro} >
                             <div className={styles.inpbox}>
                                 <div className={styles.label}>Name</div>
-                                <input defaultValue={title} onChange={(e) => setTitle(e.target.value)} type={"text"} placeholder={"Sarpong University"} className={styles.inp} />
+                                <input defaultValue={title} onChange={(e) => setTitle(e.target.value)} type={"text"} placeholder={"Lapaz"} className={styles.inp} />
                             </div>
 
                             <div className={styles.inpbox}>
                                 <div className={styles.label}>Code Name</div>
-                                <input defaultValue={codename} onChange={(e) => setCodeName(e.target.value)} type={"text"} placeholder={"SU"} className={styles.inp} />
+                                <input defaultValue={codename} onChange={(e) => setCodeName(e.target.value)} type={"text"} placeholder={"LP"} className={styles.inp} />
                             </div>
 
                             <div className={styles.inpbox}>
@@ -289,7 +289,7 @@ function AddInstitution() {
                     <div className={styles.side}>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>Institution availability</div>
+                                <div className={styles.title}>Availability</div>
                                 <Select options={ProductStatusOption} value={status} onChange={(value) => setStatus(value)} />
                             </div>
                             <div className={styles.inpbox}>

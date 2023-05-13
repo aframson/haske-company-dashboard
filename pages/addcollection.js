@@ -236,10 +236,10 @@ function AddProducts() {
 
     return (
         <NavigationLayout>
-            <ViewLayout title={"Collections"}>
+            <ViewLayout title={"Categories"}>
                 <div className={styles.acceptbox}>
                     <div className={styles.navbox}>
-                        <div className={styles.unsaved}>Create Collection  </div>
+                        <div className={styles.unsaved}>Create Categories</div>
                         <div className={styles.savebox}>
                             <button id={styles.discard} onClick={() => router.back()} className={styles.actionbutt}>Discard</button>
                             {isUpdate ? (
@@ -273,12 +273,12 @@ function AddProducts() {
                     <div className={styles.side}>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>What institution does this product belong</div>
+                                <div className={styles.title}>What Locality does this product belong</div>
                                 <div className={styles.sub}>
                                     Search or browse to add Vendor.
                                 </div>
                                 <Select
-                                    placeholder={"Search or select Institution"}
+                                    placeholder={"Search or select Locality"}
                                     options={getProducts2 && getProducts2.map((item, i) => {
                                         return {
                                             id: item.id,
@@ -327,7 +327,7 @@ function AddProducts() {
                         </NicheCard>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>Add Product To Collection</div>
+                                <div className={styles.title}>Add Product To Categories</div>
                                 <div className={styles.sub}>
                                     Search or browse to add products.
                                 </div>

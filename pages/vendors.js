@@ -64,7 +64,7 @@ function Vendors() {
 
     return (
         <NavigationLayout>
-            <ViewLayout title={"Vendors"}>
+            <ViewLayout title={"Restaurant"}>
 
                 <NicheCard id={styles.prodbox}>
                     <div className={styles.toptabnavigator}>
@@ -105,7 +105,7 @@ function Vendors() {
                                 <center>
                                     <ReactLoading color={'white'} height={20} width={20} />
                                 </center>
-                            ) : "Add Vendors"}
+                            ) : "Add"}
                         </button>
                     </div>
                     {tabs === 'active' ? (
