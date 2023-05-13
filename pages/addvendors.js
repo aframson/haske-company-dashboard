@@ -296,7 +296,7 @@ function AddVendors() {
                         </NicheCard>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>Add Vendor To Institution</div>
+                                <div className={styles.title}>Add Locality To Restaurant</div>
                                 <div className={styles.sub}>
                                     Search or browse to add institution.
                                 </div>
@@ -341,7 +341,7 @@ function AddVendors() {
                     <div className={styles.side}>
                         <NicheCard id={styles.pro}>
                             <div className={styles.inpbox}>
-                                <div className={styles.title}>Vendor availability</div>
+                                <div className={styles.title}> availability</div>
                                 <Select options={ProductStatusOption} value={status} onChange={(value) => setProductStatus(value)} />
                             </div>
                             <div className={styles.inpbox}>
