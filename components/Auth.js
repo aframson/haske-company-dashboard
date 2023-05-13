@@ -80,7 +80,7 @@ function Auth() {
 
             <div className={styles.foot}>
               By proceeding, you consent to get calls, WhatsApp or SMS messages,
-              including by automated means, from Soma and its affiliates to the number provided.
+              including by automated means, from HASKE and its affiliates to the details provided.
             </div>
           </>
 
