@@ -4,7 +4,7 @@ import NavigationLayout from '../components/NavigationLayout';
 import ViewLayout from '../components/ViewLayout';
 import NicheCard from '../components/NicheCard';
 import { FileUploader } from "react-drag-drop-files";
-const fileTypes = ["JPG", "PNG", "GIF", "JPEG","obj"];
+const fileTypes = ["JPG", "PNG", "GIF", "JPEG","obj","json"];
 import { MdDragIndicator, MdDelete } from 'react-icons/md'
 import { BiCheckboxSquare, BiCheckbox } from 'react-icons/bi'
 import { chooseImage, handleUpload, Update, delImageData, chooseImageWhenUpdated, fetchProductsById } from '../controllers/products'
